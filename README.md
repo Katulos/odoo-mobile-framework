@@ -1,5 +1,5 @@
 <img src="https://github.com/Odoo-mobile/framework/blob/master/odoo_mobile.png" alt="Odoo Mobile"/>
-<br/>v2.3.0 (Build 7)
+<br/>v0.1.0 (Build 2)
 
 This is a fork of the [Odoo-mobile/framework](https://github.com/Odoo-mobile/framework) project.
 Due to the fact that it is impossible to properly configure semantic-release on the fork, the project was copied.
@@ -8,7 +8,7 @@ Due to the fact that it is impossible to properly configure semantic-release on 
 ![develop](https://github.com/Katulos/apk-semantic-release/actions/workflows/develop.yml/badge.svg?branch=develop)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
-# Odoo Mobile v2.3.0 (Framework)
+# Odoo Mobile v0.1.0 (Framework)
 
 Odoo Mobile is open-source framework allows you to integrate Odoo into your Android app.
 
