@@ -1,29 +1,25 @@
 package com.odoo.core.tools.permissions;
 
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-
+import androidx.core.app.ActivityCompat;
 import com.odoo.core.support.OdooCompatActivity;
 import com.odoo.core.support.addons.fragment.BaseFragment;
 
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 26/11/15
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 26/11/15
  */
 public class DevicePermissionHelper implements OdooCompatActivity.DevicePermissionResultListener {
     public static final String TAG = DevicePermissionHelper.class.getSimpleName();
@@ -57,7 +53,8 @@ public class DevicePermissionHelper implements OdooCompatActivity.DevicePermissi
         if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission)) {
             if (callback != null) callback.onPermissionRationale();
         } else {
-            ActivityCompat.requestPermissions(mActivity, new String[]{permission}, REQUEST_PERMISSION);
+            ActivityCompat.requestPermissions(
+                    mActivity, new String[] {permission}, REQUEST_PERMISSION);
         }
     }
 
@@ -67,14 +64,14 @@ public class DevicePermissionHelper implements OdooCompatActivity.DevicePermissi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (mPermissionGrantListener != null)
                     mPermissionGrantListener.onPermissionGranted();
             } else {
-                if (mPermissionGrantListener != null)
-                    mPermissionGrantListener.onPermissionDenied();
+                if (mPermissionGrantListener != null) mPermissionGrantListener.onPermissionDenied();
             }
         }
         if (requestCode == REQUEST_PERMISSIONS) {
@@ -82,8 +79,7 @@ public class DevicePermissionHelper implements OdooCompatActivity.DevicePermissi
                 if (mPermissionGrantListener != null)
                     mPermissionGrantListener.onPermissionGranted();
             } else {
-                if (mPermissionGrantListener != null)
-                    mPermissionGrantListener.onPermissionDenied();
+                if (mPermissionGrantListener != null) mPermissionGrantListener.onPermissionDenied();
             }
         }
     }

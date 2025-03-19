@@ -1,15 +1,12 @@
 package com.odoo.core.orm;
 
 import android.content.Context;
-
 import com.odoo.App;
 import com.odoo.core.support.OUser;
-
+import dalvik.system.DexFile;
 import java.lang.reflect.Constructor;
 import java.util.Enumeration;
 import java.util.HashMap;
-
-import dalvik.system.DexFile;
 
 public class ModelRegistryUtils {
 
@@ -21,9 +18,11 @@ public class ModelRegistryUtils {
             for (Enumeration<String> item = dexFile.entries(); item.hasMoreElements(); ) {
                 String element = item.nextElement();
                 if (element.startsWith(App.class.getPackage().getName())) {
-                    Class<? extends OModel> clsName = (Class<? extends OModel>) Class.forName(element);
-                    if (clsName != null && clsName.getSuperclass() != null &&
-                            OModel.class.isAssignableFrom(clsName.getSuperclass())) {
+                    Class<? extends OModel> clsName =
+                            (Class<? extends OModel>) Class.forName(element);
+                    if (clsName != null
+                            && clsName.getSuperclass() != null
+                            && OModel.class.isAssignableFrom(clsName.getSuperclass())) {
                         String modelName = getModelName(context, clsName);
                         if (modelName != null) {
                             this.models.put(modelName, clsName);

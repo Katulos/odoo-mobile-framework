@@ -1,23 +1,22 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 7/1/15 5:10 PM
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
+
+import static odoo.controls.OField.FieldType;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -30,18 +29,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.utils.ODateUtils;
-
 import java.util.Date;
 
-import static odoo.controls.OField.FieldType;
-
-public class ODateTimeField extends LinearLayout implements IOControlData,
-        DateTimePicker.PickerCallBack {
+public class ODateTimeField extends LinearLayout
+        implements IOControlData, DateTimePicker.PickerCallBack {
     public static final String TAG = ODateTimeField.class.getSimpleName();
-
 
     private Context mContext;
     private Boolean mEditable = false;
@@ -60,8 +54,7 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
     private int textColor = Color.BLACK;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ODateTimeField(Context context, AttributeSet attrs,
-                          int defStyleAttr, int defStyleRes) {
+    public ODateTimeField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -81,12 +74,10 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
         init(context, null, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (attrs != null) {
+        if (attrs != null) {}
 
-        }
         mReady = false;
         initControl();
     }
@@ -100,8 +91,8 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
 
     @Override
     public void initControl() {
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         removeAllViews();
         setOrientation(VERTICAL);
         txvText = new TextView(mContext);
@@ -141,18 +132,15 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
         return null;
     }
 
-
     @Override
     public void setError(String error) {
-        if (error != null)
-            Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
+        if (error != null) Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public Object getValue() {
         if (mValue != null && !TextUtils.isEmpty(mValue.toString())) {
-            if (mFieldType == FieldType.Date)
-                return mValue.toString().replaceAll(" 00:00:00", "");
+            if (mFieldType == FieldType.Date) return mValue.toString().replaceAll(" 00:00:00", "");
             return mValue;
         }
         return null;
@@ -182,12 +170,9 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
 
     @Override
     public String getLabel() {
-        if (mLabel != null)
-            return mLabel;
-        if (mColumn != null)
-            return mColumn.getLabel();
-        if (mHint != null)
-            return mHint;
+        if (mLabel != null) return mLabel;
+        if (mColumn != null) return mColumn.getLabel();
+        if (mHint != null) return mHint;
         return "unknown";
     }
 
@@ -196,33 +181,39 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
         mValueUpdateListener = listener;
     }
 
-    View.OnClickListener onClick = new OnClickListener() {
+    View.OnClickListener onClick =
+            new OnClickListener() {
 
-        @Override
-        public void onClick(View v) {
-            builder = new DateTimePicker.Builder(mContext);
-            if (mFieldType == FieldType.Date) {
-                if (getValue() != null && !getValue().toString().equals("false"))
-                    builder.setDate(getValue().toString());
-                builder.setType(DateTimePicker.Type.Date);
-            } else if (mFieldType == FieldType.Time) {
-                if (getValue() != null && !getValue().toString().equals("false"))
-                    builder.setTime(getValue().toString());
-                builder.setType(DateTimePicker.Type.Time);
-            } else {
-                if (getValue() != null && !getValue().toString().equals("false"))
-                    builder.setDateTime(getValue().toString());
-                builder.setType(DateTimePicker.Type.DateTime);
-            }
-            builder.setCallBack(ODateTimeField.this);
-            builder.build().show();
-        }
-    };
+                @Override
+                public void onClick(View v) {
+                    builder = new DateTimePicker.Builder(mContext);
+                    if (mFieldType == FieldType.Date) {
+                        if (getValue() != null && !getValue().toString().equals("false"))
+                            builder.setDate(getValue().toString());
+                        builder.setType(DateTimePicker.Type.Date);
+                    } else if (mFieldType == FieldType.Time) {
+                        if (getValue() != null && !getValue().toString().equals("false"))
+                            builder.setTime(getValue().toString());
+                        builder.setType(DateTimePicker.Type.Time);
+                    } else {
+                        if (getValue() != null && !getValue().toString().equals("false"))
+                            builder.setDateTime(getValue().toString());
+                        builder.setType(DateTimePicker.Type.DateTime);
+                    }
+                    builder.setCallBack(ODateTimeField.this);
+                    builder.build().show();
+                }
+            };
 
     private String getDate(String date, String format) {
         if (date.contains("now()") || date.contains("NOW()")) {
-            mValue = ODateUtils.getUTCDate((mFieldType == FieldType.Date) ? ODateUtils.DEFAULT_DATE_FORMAT
-                    : (mFieldType == FieldType.Time) ? ODateUtils.DEFAULT_TIME_FORMAT : ODateUtils.DEFAULT_FORMAT);
+            mValue =
+                    ODateUtils.getUTCDate(
+                            (mFieldType == FieldType.Date)
+                                    ? ODateUtils.DEFAULT_DATE_FORMAT
+                                    : (mFieldType == FieldType.Time)
+                                            ? ODateUtils.DEFAULT_TIME_FORMAT
+                                            : ODateUtils.DEFAULT_FORMAT);
             return ODateUtils.getDate(format);
         } else {
             if (mFieldType == FieldType.Date) {
@@ -261,8 +252,7 @@ public class ODateTimeField extends LinearLayout implements IOControlData,
     }
 
     public void setParsePattern(String parsePattern) {
-        if (parsePattern != null)
-            mParsePattern = parsePattern;
+        if (parsePattern != null) mParsePattern = parsePattern;
     }
 
     @Override

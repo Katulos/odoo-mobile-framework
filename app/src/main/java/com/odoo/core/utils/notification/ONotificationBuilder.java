@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p>
- * Created on 9/1/15 6:51 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 9/1/15 6:51 PM
  */
 package com.odoo.core.utils.notification;
 
@@ -29,16 +26,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
-
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.Builder;
 import com.odoo.R;
 import com.odoo.core.account.BaseSettings;
 import com.odoo.core.utils.OResource;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class ONotificationBuilder {
     public static final String TAG = ONotificationBuilder.class.getSimpleName();
@@ -143,17 +137,17 @@ public class ONotificationBuilder {
     }
 
     private void init() {
-        mNotificationManager = (NotificationManager) mContext
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(mContext);
         mNotificationBuilder.setContentTitle(title);
         mNotificationBuilder.setContentText(text);
-        if (bigText == null)
-            mNotificationBuilder.setContentInfo(text);
+        if (bigText == null) mNotificationBuilder.setContentInfo(text);
         if (withLargeIcon()) {
             mNotificationBuilder.setSmallIcon(small_icon);
             Bitmap icon = BitmapFactory.decodeResource(mContext.getResources(), this.icon);
-            Bitmap newIcon = Bitmap.createBitmap(icon.getWidth(), icon.getHeight(), icon.getConfig());
+            Bitmap newIcon =
+                    Bitmap.createBitmap(icon.getWidth(), icon.getHeight(), icon.getConfig());
             Canvas canvas = new Canvas(newIcon);
             canvas.drawColor(OResource.color(mContext, R.color.theme_primary));
             canvas.drawBitmap(icon, 0, 0, null);
@@ -172,8 +166,8 @@ public class ONotificationBuilder {
             mNotificationBuilder.setStyle(notiStyle);
         }
         if (bigPictureStyle != null) {
-            mNotificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-                    .bigPicture(bigPictureStyle));
+            mNotificationBuilder.setStyle(
+                    new NotificationCompat.BigPictureStyle().bigPicture(bigPictureStyle));
         }
 
         if (maxProgress != -1) {
@@ -187,8 +181,7 @@ public class ONotificationBuilder {
     }
 
     private void setVibrateForNotification() {
-        mNotificationBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000,
-                1000});
+        mNotificationBuilder.setVibrate(new long[] {1000, 1000, 1000, 1000, 1000});
     }
 
     public ONotificationBuilder setResultIntent(Intent intent) {
@@ -201,8 +194,7 @@ public class ONotificationBuilder {
         if (withVibrate) {
             setVibrateForNotification();
         }
-        if (withRingTone())
-            setSoundForNotification();
+        if (withRingTone()) setSoundForNotification();
         if (resultIntent != null) {
             _setResultIntent();
         }
@@ -217,16 +209,17 @@ public class ONotificationBuilder {
             Intent intent = new Intent(mContext, action.getIntent());
             intent.setAction(action.getAction());
             intent.putExtras(action.getExtras());
-            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            mNotificationBuilder.addAction(action.getIcon(),
-                    action.getTitle(), pendingIntent);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(
+                            mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mNotificationBuilder.addAction(action.getIcon(), action.getTitle(), pendingIntent);
         }
     }
 
     private void _setResultIntent() {
-        mNotificationResultIntent = PendingIntent.getActivity(mContext, 0,
-                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mNotificationResultIntent =
+                PendingIntent.getActivity(
+                        mContext, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mNotificationBuilder.setDefaults(Notification.DEFAULT_ALL);
         mNotificationBuilder.setContentIntent(mNotificationResultIntent);
     }
@@ -239,20 +232,17 @@ public class ONotificationBuilder {
     }
 
     public static void cancelNotification(Context context) {
-        NotificationManager nMgr = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE
-        );
+        NotificationManager nMgr =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancelAll();
         ;
     }
 
     public static void cancelNotification(Context context, int id) {
-        NotificationManager nMgr = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE
-        );
+        NotificationManager nMgr =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancel(id);
     }
-
 
     public static class NotificationAction {
         private int icon;
@@ -262,8 +252,13 @@ public class ONotificationBuilder {
         private Bundle extras;
         private Class<?> intent;
 
-        public NotificationAction(int icon, String title, int requestCode,
-                                  String action, Class<?> intent, Bundle extras) {
+        public NotificationAction(
+                int icon,
+                String title,
+                int requestCode,
+                String action,
+                Class<?> intent,
+                Bundle extras) {
             super();
             this.icon = icon;
             this.title = title;
@@ -320,6 +315,5 @@ public class ONotificationBuilder {
         public void setExtras(Bundle extras) {
             this.extras = extras;
         }
-
     }
 }

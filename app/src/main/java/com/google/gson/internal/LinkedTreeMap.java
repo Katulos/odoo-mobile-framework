@@ -18,7 +18,6 @@
 package com.google.gson.internal;
 
 import com.odoo.core.rpc.helper.utils.gson.OdooRecord;
-
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.AbstractSet;
@@ -30,19 +29,22 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * A map of comparable keys to values. Unlike {@code TreeMap}, this class uses
- * insertion order for iteration order. Comparison order is only used as an
- * optimization for efficient insertion and removal.
- * <p/>
+ * A map of comparable keys to values. Unlike {@code TreeMap}, this class uses insertion order for
+ * iteration order. Comparison order is only used as an optimization for efficient insertion and
+ * removal.
+ *
+ * <p>
+ *
  * <p>This implementation was derived from Android 4.1's TreeMap class.
  */
 public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializable {
     @SuppressWarnings({"unchecked", "rawtypes"}) // to avoid Comparable<Comparable<Comparable<...>>>
-    private static final Comparator<Comparable> NATURAL_ORDER = new Comparator<Comparable>() {
-        public int compare(Comparable a, Comparable b) {
-            return a.compareTo(b);
-        }
-    };
+    private static final Comparator<Comparable> NATURAL_ORDER =
+            new Comparator<Comparable>() {
+                public int compare(Comparable a, Comparable b) {
+                    return a.compareTo(b);
+                }
+            };
 
     Comparator<? super K> comparator;
     Node<K, V> root;
@@ -53,8 +55,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     final Node<K, V> header = new Node<K, V>();
 
     /**
-     * Create a natural order, empty tree map whose keys must be mutually
-     * comparable and non-null.
+     * Create a natural order, empty tree map whose keys must be mutually comparable and non-null.
      */
     @SuppressWarnings("unchecked") // unsafe! this assumes K is comparable
     public LinkedTreeMap() {
@@ -62,18 +63,16 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     }
 
     /**
-     * Create a tree map ordered by {@code comparator}. This map's keys may only
-     * be null if {@code comparator} permits.
+     * Create a tree map ordered by {@code comparator}. This map's keys may only be null if {@code
+     * comparator} permits.
      *
-     * @param comparator the comparator to order elements with, or {@code null} to
-     *                   use the natural ordering.
+     * @param comparator the comparator to order elements with, or {@code null} to use the natural
+     *     ordering.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     // unsafe! if comparator is null, this assumes K is comparable
     public LinkedTreeMap(Comparator<? super K> comparator) {
-        this.comparator = comparator != null
-                ? comparator
-                : (Comparator) NATURAL_ORDER;
+        this.comparator = comparator != null ? comparator : (Comparator) NATURAL_ORDER;
     }
 
     @Override
@@ -123,8 +122,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     /**
      * Returns the node at or adjacent to the given key, creating it if requested.
      *
-     * @throws ClassCastException if {@code key} and the tree's keys aren't
-     *                            mutually comparable.
+     * @throws ClassCastException if {@code key} and the tree's keys aren't mutually comparable.
      */
     Node<K, V> find(K key, boolean create) {
         Comparator<? super K> comparator = this.comparator;
@@ -134,14 +132,14 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         if (nearest != null) {
             // Micro-optimization: avoid polymorphic calls to Comparator.compare().
             @SuppressWarnings("unchecked") // Throws a ClassCastException below if there's trouble.
-                    Comparable<Object> comparableKey = (comparator == NATURAL_ORDER)
-                    ? (Comparable<Object>) key
-                    : null;
+            Comparable<Object> comparableKey =
+                    (comparator == NATURAL_ORDER) ? (Comparable<Object>) key : null;
 
             while (true) {
-                comparison = (comparableKey != null)
-                        ? comparableKey.compareTo(nearest.key)
-                        : comparator.compare(key, nearest.key);
+                comparison =
+                        (comparableKey != null)
+                                ? comparableKey.compareTo(nearest.key)
+                                : comparator.compare(key, nearest.key);
 
                 // We found the requested key.
                 if (comparison == 0) {
@@ -198,13 +196,14 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     }
 
     /**
-     * Returns this map's entry that has the same key and value as {@code
-     * entry}, or null if this map has no such entry.
-     * <p/>
-     * <p>This method uses the comparator for key equality rather than {@code
-     * equals}. If this map's comparator isn't consistent with equals (such as
-     * {@code String.CASE_INSENSITIVE_ORDER}), then {@code remove()} and {@code
-     * contains()} will violate the collections API.
+     * Returns this map's entry that has the same key and value as {@code entry}, or null if this
+     * map has no such entry.
+     *
+     * <p>
+     *
+     * <p>This method uses the comparator for key equality rather than {@code equals}. If this map's
+     * comparator isn't consistent with equals (such as {@code String.CASE_INSENSITIVE_ORDER}), then
+     * {@code remove()} and {@code contains()} will violate the collections API.
      */
     Node<K, V> findByEntry(Entry<?, ?> entry) {
         Node<K, V> mine = findByObject(entry.getKey());
@@ -217,8 +216,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     }
 
     /**
-     * Removes {@code node} from this tree, rearranging the tree's structure as
-     * necessary.
+     * Removes {@code node} from this tree, rearranging the tree's structure as necessary.
      *
      * @param unlink true to also unlink this node from the iteration linked list.
      */
@@ -233,14 +231,14 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         Node<K, V> originalParent = node.parent;
         if (left != null && right != null) {
 
-      /*
-       * To remove a node with both left and right subtrees, move an
-       * adjacent node from one of those subtrees into this node's place.
-       *
-       * Removing the adjacent node may change this node's subtrees. This
-       * node may no longer have two subtrees once the adjacent node is
-       * gone!
-       */
+            /*
+             * To remove a node with both left and right subtrees, move an
+             * adjacent node from one of those subtrees into this node's place.
+             *
+             * Removing the adjacent node may change this node's subtrees. This
+             * node may no longer have two subtrees once the adjacent node is
+             * gone!
+             */
 
             Node<K, V> adjacent = (left.height > right.height) ? left.last() : right.first();
             removeInternal(adjacent, false); // takes care of rebalance and size--
@@ -309,11 +307,10 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     }
 
     /**
-     * Rebalances the tree by making any AVL rotations necessary between the
-     * newly-unbalanced node and the tree's root.
+     * Rebalances the tree by making any AVL rotations necessary between the newly-unbalanced node
+     * and the tree's root.
      *
-     * @param insert true if the node was unbalanced by an insert; false if it
-     *               was by a removal.
+     * @param insert true if the node was unbalanced by an insert; false if it was by a removal.
      */
     private void rebalance(Node<K, V> unbalanced, boolean insert) {
         for (Node<K, V> node = unbalanced; node != null; node = node.parent) {
@@ -375,9 +372,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         }
     }
 
-    /**
-     * Rotates the subtree so that its root's right child is the new root.
-     */
+    /** Rotates the subtree so that its root's right child is the new root. */
     private void rotateLeft(Node<K, V> root) {
         Node<K, V> left = root.left;
         Node<K, V> pivot = root.right;
@@ -397,15 +392,13 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         root.parent = pivot;
 
         // fix heights
-        root.height = Math.max(left != null ? left.height : 0,
-                pivotLeft != null ? pivotLeft.height : 0) + 1;
-        pivot.height = Math.max(root.height,
-                pivotRight != null ? pivotRight.height : 0) + 1;
+        root.height =
+                Math.max(left != null ? left.height : 0, pivotLeft != null ? pivotLeft.height : 0)
+                        + 1;
+        pivot.height = Math.max(root.height, pivotRight != null ? pivotRight.height : 0) + 1;
     }
 
-    /**
-     * Rotates the subtree so that its root's left child is the new root.
-     */
+    /** Rotates the subtree so that its root's left child is the new root. */
     private void rotateRight(Node<K, V> root) {
         Node<K, V> pivot = root.left;
         Node<K, V> right = root.right;
@@ -425,10 +418,12 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         root.parent = pivot;
 
         // fixup heights
-        root.height = Math.max(right != null ? right.height : 0,
-                pivotRight != null ? pivotRight.height : 0) + 1;
-        pivot.height = Math.max(root.height,
-                pivotLeft != null ? pivotLeft.height : 0) + 1;
+        root.height =
+                Math.max(
+                                right != null ? right.height : 0,
+                                pivotRight != null ? pivotRight.height : 0)
+                        + 1;
+        pivot.height = Math.max(root.height, pivotLeft != null ? pivotLeft.height : 0) + 1;
     }
 
     private EntrySet entrySet;
@@ -456,17 +451,13 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
         V value;
         int height;
 
-        /**
-         * Create the header entry
-         */
+        /** Create the header entry */
         Node() {
             key = null;
             next = prev = this;
         }
 
-        /**
-         * Create a regular entry
-         */
+        /** Create a regular entry */
         Node(Node<K, V> parent, K key, Node<K, V> next, Node<K, V> prev) {
             this.parent = parent;
             this.key = key;
@@ -497,15 +488,16 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
             if (o instanceof Entry) {
                 Entry other = (Entry) o;
                 return (key == null ? other.getKey() == null : key.equals(other.getKey()))
-                        && (value == null ? other.getValue() == null : value.equals(other.getValue()));
+                        && (value == null
+                                ? other.getValue() == null
+                                : value.equals(other.getValue()));
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return (key == null ? 0 : key.hashCode())
-                    ^ (value == null ? 0 : value.hashCode());
+            return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
         }
 
         @Override
@@ -513,9 +505,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
             return key + "=" + value;
         }
 
-        /**
-         * Returns the first node in this subtree.
-         */
+        /** Returns the first node in this subtree. */
         public Node<K, V> first() {
             Node<K, V> node = this;
             Node<K, V> child = node.left;
@@ -526,9 +516,7 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
             return node;
         }
 
-        /**
-         * Returns the last node in this subtree.
-         */
+        /** Returns the last node in this subtree. */
         public Node<K, V> last() {
             Node<K, V> node = this;
             Node<K, V> child = node.right;
@@ -643,10 +631,9 @@ public class LinkedTreeMap<K, V> extends OdooRecord<K, V> implements Serializabl
     }
 
     /**
-     * If somebody is unlucky enough to have to serialize one of these, serialize
-     * it as a LinkedHashMap so that they won't need Gson on the other side to
-     * deserialize it. Using serialization defeats our DoS defence, so most apps
-     * shouldn't use it.
+     * If somebody is unlucky enough to have to serialize one of these, serialize it as a
+     * LinkedHashMap so that they won't need Gson on the other side to deserialize it. Using
+     * serialization defeats our DoS defence, so most apps shouldn't use it.
      */
     private Object writeReplace() throws ObjectStreamException {
         return new LinkedHashMap<K, V>(this);

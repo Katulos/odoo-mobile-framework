@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p>
- * Created on 7/1/15 5:10 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
 
@@ -29,12 +26,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.utils.ODateUtils;
 
-public class OEditTextField extends LinearLayout implements IOControlData,
-        View.OnFocusChangeListener {
+public class OEditTextField extends LinearLayout
+        implements IOControlData, View.OnFocusChangeListener {
     public static final String TAG = OEditTextField.class.getSimpleName();
 
     private Context mContext;
@@ -50,8 +46,7 @@ public class OEditTextField extends LinearLayout implements IOControlData,
     private int textColor = Color.BLACK;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OEditTextField(Context context, AttributeSet attrs,
-                          int defStyleAttr, int defStyleRes) {
+    public OEditTextField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -71,21 +66,18 @@ public class OEditTextField extends LinearLayout implements IOControlData,
         init(context, null, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (attrs != null) {
+        if (attrs != null) {}
 
-        }
         mReady = false;
-        if (mContext.getClass().getSimpleName().contains("BridgeContext"))
-            initControl();
+        if (mContext.getClass().getSimpleName().contains("BridgeContext")) initControl();
     }
 
     public void initControl() {
         // Creating control
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         removeAllViews();
         setOrientation(VERTICAL);
         if (mEditable) {
@@ -128,8 +120,7 @@ public class OEditTextField extends LinearLayout implements IOControlData,
 
     @Override
     public void setValue(Object value) {
-        if (value == null)
-            return;
+        if (value == null) return;
         if (value.toString().equals("false")) {
             value = "";
         } else if (mWidget == OField.WidgetType.Duration) {
@@ -147,11 +138,9 @@ public class OEditTextField extends LinearLayout implements IOControlData,
 
     @Override
     public View getFieldView() {
-        if (mEditable)
-            return edtText;
+        if (mEditable) return edtText;
         return txvText;
     }
-
 
     @Override
     public void setError(String error) {
@@ -163,11 +152,10 @@ public class OEditTextField extends LinearLayout implements IOControlData,
     @Override
     public Object getValue() {
         Object value = null;
-        if (mEditable)
-            value = edtText.getText().toString();
-        else if (txvText != null)
-            value = txvText.getText().toString();
-        if ((value != null || !value.toString().equals("false")) && mWidget == OField.WidgetType.Duration) {
+        if (mEditable) value = edtText.getText().toString();
+        else if (txvText != null) value = txvText.getText().toString();
+        if ((value != null || !value.toString().equals("false"))
+                && mWidget == OField.WidgetType.Duration) {
             value = ODateUtils.durationToFloat(value.toString());
         }
         return value;
@@ -201,12 +189,9 @@ public class OEditTextField extends LinearLayout implements IOControlData,
 
     @Override
     public String getLabel() {
-        if (mLabel != null)
-            return mLabel;
-        if (mColumn != null)
-            return mColumn.getLabel();
-        if (mHint != null)
-            return mHint;
+        if (mLabel != null) return mLabel;
+        if (mColumn != null) return mColumn.getLabel();
+        if (mHint != null) return mHint;
         return "unknown";
     }
 

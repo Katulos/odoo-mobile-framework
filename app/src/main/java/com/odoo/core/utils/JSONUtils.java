@@ -1,14 +1,11 @@
 package com.odoo.core.utils;
 
 import com.odoo.core.orm.ODataRow;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class JSONUtils {
     public static <T> List<T> toList(JSONArray array) {
@@ -28,8 +25,7 @@ public class JSONUtils {
     public static <T> JSONArray toArray(List<T> list) {
         JSONArray array = new JSONArray();
         try {
-            for (T obj : list)
-                array.put(obj);
+            for (T obj : list) array.put(obj);
         } catch (Exception e) {
             e.printStackTrace();
         }

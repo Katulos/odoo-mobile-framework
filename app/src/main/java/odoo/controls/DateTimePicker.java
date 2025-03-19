@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 7/1/15 5:10 PM
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
 
@@ -24,9 +21,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-
 import com.odoo.core.utils.ODateUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +30,9 @@ public class DateTimePicker {
     public static final String TAG = DateTimePicker.class.getSimpleName();
 
     public enum Type {
-        Date, DateTime, Time
+        Date,
+        DateTime,
+        Time
     }
 
     private Context mContext = null;
@@ -43,9 +40,7 @@ public class DateTimePicker {
     private DatePicker mDatePicker;
     private TimePicker mTimePicker;
 
-    public DateTimePicker() {
-
-    }
+    public DateTimePicker() {}
 
     public DateTimePicker(Context context, Builder builder) {
         mContext = context;
@@ -64,25 +59,26 @@ public class DateTimePicker {
         }
     }
 
-    PickerCallBack callBack = new PickerCallBack() {
+    PickerCallBack callBack =
+            new PickerCallBack() {
 
-        @Override
-        public void onTimePick(String time) {
-            mBuilder.getCallBack().onTimePick(time);
-            mTimePicker.dismiss();
-        }
+                @Override
+                public void onTimePick(String time) {
+                    mBuilder.getCallBack().onTimePick(time);
+                    mTimePicker.dismiss();
+                }
 
-        @Override
-        public void onDatePick(String date) {
-            mDatePicker.dismiss();
-            if (mBuilder.getType() == Type.DateTime) {
-                mTimePicker = new TimePicker(mContext, mBuilder.getTime());
-                mTimePicker.setPickerCallback(callBack);
-                mTimePicker.show();
-            }
-            mBuilder.getCallBack().onDatePick(date);
-        }
-    };
+                @Override
+                public void onDatePick(String date) {
+                    mDatePicker.dismiss();
+                    if (mBuilder.getType() == Type.DateTime) {
+                        mTimePicker = new TimePicker(mContext, mBuilder.getTime());
+                        mTimePicker.setPickerCallback(callBack);
+                        mTimePicker.show();
+                    }
+                    mBuilder.getCallBack().onDatePick(date);
+                }
+            };
 
     public static class Builder {
         private Context mContext;
@@ -109,10 +105,16 @@ public class DateTimePicker {
 
         public Builder setDateTime(String dateTime) {
             if (dateTime != null) {
-                date = ODateUtils.parseDate(dateTime, ODateUtils.DEFAULT_FORMAT,
-                        ODateUtils.DEFAULT_DATE_FORMAT);
-                time = ODateUtils.parseDate(dateTime, ODateUtils.DEFAULT_FORMAT,
-                        ODateUtils.DEFAULT_TIME_FORMAT);
+                date =
+                        ODateUtils.parseDate(
+                                dateTime,
+                                ODateUtils.DEFAULT_FORMAT,
+                                ODateUtils.DEFAULT_DATE_FORMAT);
+                time =
+                        ODateUtils.parseDate(
+                                dateTime,
+                                ODateUtils.DEFAULT_FORMAT,
+                                ODateUtils.DEFAULT_TIME_FORMAT);
             }
             return this;
         }
@@ -175,8 +177,8 @@ public class DateTimePicker {
         }
     }
 
-    public class DatePicker implements DatePickerDialog.OnDateSetListener,
-            DialogInterface.OnCancelListener {
+    public class DatePicker
+            implements DatePickerDialog.OnDateSetListener, DialogInterface.OnCancelListener {
 
         private PickerCallBack mCallback;
         private boolean called = false;
@@ -192,21 +194,18 @@ public class DateTimePicker {
         }
 
         @Override
-        public void onCancel(DialogInterface dialog) {
-
-        }
+        public void onCancel(DialogInterface dialog) {}
 
         @Override
-        public void onDateSet(android.widget.DatePicker view, int year,
-                              int monthOfYear, int dayOfMonth) {
+        public void onDateSet(
+                android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             if (mCallback != null && !called) {
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.MONTH, monthOfYear);
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 cal.set(Calendar.YEAR, year);
                 Date now = cal.getTime();
-                String date = new SimpleDateFormat(ODateUtils.DEFAULT_DATE_FORMAT)
-                        .format(now);
+                String date = new SimpleDateFormat(ODateUtils.DEFAULT_DATE_FORMAT).format(now);
                 mCallback.onDatePick(date);
                 called = true;
             }
@@ -225,8 +224,8 @@ public class DateTimePicker {
         }
     }
 
-    public class TimePicker implements TimePickerDialog.OnTimeSetListener,
-            DialogInterface.OnCancelListener {
+    public class TimePicker
+            implements TimePickerDialog.OnTimeSetListener, DialogInterface.OnCancelListener {
 
         private PickerCallBack mCallback;
         private TimePickerDialog mDialog = null;
@@ -241,23 +240,20 @@ public class DateTimePicker {
         }
 
         @Override
-        public void onTimeSet(android.widget.TimePicker view, int hourOfDay,
-                              int minute) {
+        public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
             if (mCallback != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 cal.set(Calendar.MINUTE, minute);
                 cal.set(Calendar.MILLISECOND, 0);
                 Date now = cal.getTime();
-                String time = new SimpleDateFormat(ODateUtils.DEFAULT_TIME_FORMAT)
-                        .format(now);
+                String time = new SimpleDateFormat(ODateUtils.DEFAULT_TIME_FORMAT).format(now);
                 mCallback.onTimePick(time);
             }
         }
 
         @Override
-        public void onCancel(DialogInterface dialog) {
-        }
+        public void onCancel(DialogInterface dialog) {}
 
         public void setPickerCallback(PickerCallBack callback) {
             mCallback = callback;

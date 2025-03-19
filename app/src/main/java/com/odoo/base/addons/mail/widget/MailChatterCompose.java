@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 27/2/15 5:53 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 27/2/15 5:53 PM
  */
 package com.odoo.base.addons.mail.widget;
 
@@ -34,7 +31,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.odoo.R;
 import com.odoo.base.addons.ir.IrAttachment;
 import com.odoo.base.addons.ir.feature.OFileManager;
@@ -44,20 +40,17 @@ import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.OValues;
 import com.odoo.core.orm.fields.OColumn;
+import com.odoo.core.rpc.helper.OArguments;
+import com.odoo.core.rpc.helper.ORecordValues;
 import com.odoo.core.support.OdooCompatActivity;
 import com.odoo.core.utils.BitmapUtils;
 import com.odoo.core.utils.OControls;
 import com.odoo.core.utils.OResource;
 import com.odoo.core.utils.OStringColorUtil;
 import com.odoo.core.utils.logger.OLog;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.odoo.core.rpc.helper.OArguments;
-import com.odoo.core.rpc.helper.ORecordValues;
-
 
 public class MailChatterCompose extends OdooCompatActivity implements View.OnClickListener {
     public static final String TAG = MailChatterCompose.class.getSimpleName();
@@ -70,7 +63,8 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
     private List<Integer> attachmentIds = new ArrayList<>();
 
     public enum MessageType {
-        Message, InternalNote
+        Message,
+        InternalNote
     }
 
     private MessageType mType = MessageType.Message;
@@ -83,7 +77,9 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.base_mail_chatter_message_compose);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow()
+                .setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         fileManager = new OFileManager(this);
         Bundle extra = getIntent().getExtras();
         mType = MessageType.valueOf(extra.getString("type"));
@@ -140,16 +136,13 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnSend:
-                sendMessage();
-                break;
-            case R.id.btnCancel:
-                finish();
-                break;
-            case R.id.btnAttachment:
-                fileManager.requestForFile(OFileManager.RequestType.ALL_FILE_TYPE);
-                break;
+        int id = v.getId();
+        if (id == R.id.btnSend) {
+            sendMessage();
+        } else if (id == R.id.btnCancel) {
+            finish();
+        } else if (id == R.id.btnAttachment) {
+            fileManager.requestForFile(OFileManager.RequestType.ALL_FILE_TYPE);
         }
     }
 
@@ -163,8 +156,9 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
     }
 
     private void addAttachment(OValues values) {
-        View attachmentView = LayoutInflater.from(this)
-                .inflate(R.layout.base_attachment_item, horizontalScrollView, false);
+        View attachmentView =
+                LayoutInflater.from(this)
+                        .inflate(R.layout.base_attachment_item, horizontalScrollView, false);
         String fileName = values.getString("name");
         String type = values.getString("file_type");
         ImageView imgPreview = (ImageView) attachmentView.findViewById(R.id.attachmentPreview);
@@ -180,15 +174,15 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
         }
         OControls.setText(attachmentView, R.id.attachmentFileName, fileName);
         attachmentView.setTag(values);
-        attachmentView.findViewById(R.id.btnRemoveAttachment)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        horizontalScrollView.removeView(
-                                (View) v.getParent()
-                        );
-                    }
-                });
+        attachmentView
+                .findViewById(R.id.btnRemoveAttachment)
+                .setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                horizontalScrollView.removeView((View) v.getParent());
+                            }
+                        });
         horizontalScrollView.addView(attachmentView);
     }
 
@@ -223,8 +217,7 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
     }
 
     private void postMessage() {
-        String subject = (mType == MessageType.Message) ?
-                edtSubject.getText().toString() : "false";
+        String subject = (mType == MessageType.Message) ? edtSubject.getText().toString() : "false";
         MessagePost messagePost = new MessagePost();
         messagePost.execute(subject, edtBody.getText().toString());
     }
@@ -251,22 +244,24 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
                 List<Integer> ids = new ArrayList<>();
                 for (final OValues value : params[0]) {
                     boolean isImage = (value.getString("file_type").contains("image"));
-                    value.put("datas", BitmapUtils.uriToBase64(
-                            Uri.parse(value.getString("file_uri"))
-                            , getContentResolver(), isImage
-                    ));
+                    value.put(
+                            "datas",
+                            BitmapUtils.uriToBase64(
+                                    Uri.parse(value.getString("file_uri")),
+                                    getContentResolver(),
+                                    isImage));
                     ORecordValues data = IrAttachment.valuesToData(irAttachment, value);
                     if (data != null) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.setProgress(params[0].indexOf(value) + 1);
-                            }
-                        });
+                        runOnUiThread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.setProgress(params[0].indexOf(value) + 1);
+                                    }
+                                });
                         int newId = irAttachment.getServerDataHelper().createOnServer(data);
                         value.put("id", newId);
-                        irAttachment.createAttachment(value, mailMessage.getModelName(),
-                                0);
+                        irAttachment.createAttachment(value, mailMessage.getModelName(), 0);
                         ids.add(newId);
                     }
                 }
@@ -283,8 +278,7 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
             progressDialog.dismiss();
             attachmentIds.clear();
             attachmentIds.addAll(ids);
-            if (ids != null)
-                postMessage();
+            if (ids != null) postMessage();
         }
     }
 
@@ -296,8 +290,9 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
             super.onPreExecute();
             progressDialog = new ProgressDialog(MailChatterCompose.this);
             progressDialog.setTitle(R.string.title_working);
-            progressDialog.setMessage(((mType == MessageType.Message) ? "Sending message" :
-                    "Logging internal note") + "...");
+            progressDialog.setMessage(
+                    ((mType == MessageType.Message) ? "Sending message" : "Logging internal note")
+                            + "...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -329,8 +324,10 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
                 data.put("type", "comment");
                 data.put("content_subtype", "plaintext");
                 data.put("subtype", (mType == MessageType.Message) ? "mail.mt_comment" : false);
-                Double newId = (double)
-                        mModel.getServerDataHelper().callMethod("message_post", args, null, data);
+                Double newId =
+                        (double)
+                                mModel.getServerDataHelper()
+                                        .callMethod("message_post", args, null, data);
                 Thread.sleep(500);
                 ODataRow row = new ODataRow();
                 row.put("id", newId.intValue());
@@ -349,9 +346,9 @@ public class MailChatterCompose extends OdooCompatActivity implements View.OnCli
             Context ctx = MailChatterCompose.this;
             Intent intent = new Intent();
             intent.setAction("mail.message.update");
+            intent.setPackage(getPackageName());
             ctx.sendBroadcast(intent);
             finish();
-
         }
     }
 }

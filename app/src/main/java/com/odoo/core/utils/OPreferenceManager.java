@@ -1,28 +1,24 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 31/12/14 5:39 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 31/12/14 5:39 PM
  */
 package com.odoo.core.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,8 +29,7 @@ public class OPreferenceManager {
     private SharedPreferences mPref = null;
 
     public OPreferenceManager(Context context) {
-        mPref = android.preference.PreferenceManager
-                .getDefaultSharedPreferences(context);
+        mPref = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void putString(String key, String value) {
@@ -52,8 +47,7 @@ public class OPreferenceManager {
     public List<String> getStringSet(String key) {
         List<String> list = new ArrayList<>();
         Set<String> vals = mPref.getStringSet(key, null);
-        if (vals != null)
-            list.addAll(vals);
+        if (vals != null) list.addAll(vals);
         return list;
     }
 
@@ -88,5 +82,4 @@ public class OPreferenceManager {
     public boolean getBoolean(String key, boolean defValue) {
         return mPref.getBoolean(key, defValue);
     }
-
 }

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 30/12/14 3:28 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 30/12/14 3:28 PM
  */
 package com.odoo.addons.customers;
 
@@ -24,10 +21,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +30,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.odoo.R;
 import com.odoo.base.addons.res.ResPartner;
 import com.odoo.core.orm.ODataRow;
@@ -50,14 +46,17 @@ import com.odoo.core.utils.BitmapUtils;
 import com.odoo.core.utils.IntentUtils;
 import com.odoo.core.utils.OControls;
 import com.odoo.core.utils.OCursorUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customers extends BaseFragment implements ISyncStatusObserverListener,
-        LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener,
-        OCursorListAdapter.OnViewBindListener, IOnSearchViewChangeListener, View.OnClickListener,
-        AdapterView.OnItemClickListener {
+public class Customers extends BaseFragment
+        implements ISyncStatusObserverListener,
+                LoaderManager.LoaderCallbacks<Cursor>,
+                SwipeRefreshLayout.OnRefreshListener,
+                OCursorListAdapter.OnViewBindListener,
+                IOnSearchViewChangeListener,
+                View.OnClickListener,
+                AdapterView.OnItemClickListener {
 
     public static final String KEY = Customers.class.getSimpleName();
     public static final String EXTRA_KEY_TYPE = "extra_key_type";
@@ -67,14 +66,16 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
     private boolean syncRequested = false;
 
     public enum Type {
-        Customer, Supplier, Company
+        Customer,
+        Supplier,
+        Company
     }
 
     private Type mType = Type.Customer;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         setHasSyncStatusObserver(KEY, this, db());
         return inflater.inflate(R.layout.common_listview, container, false);
@@ -95,7 +96,6 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         mPartnersList.setOnItemClickListener(this);
         setHasFloatingButton(view, R.id.fabButton, mPartnersList, this);
         getLoaderManager().initLoader(0, null, this);
-
     }
 
     @Override
@@ -108,10 +108,16 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         }
         OControls.setImage(view, R.id.image_small, img);
         OControls.setText(view, R.id.name, row.getString("name"));
-        OControls.setText(view, R.id.company_name, (row.getString("company_name").equals("false"))
-                ? "" : row.getString("company_name"));
-        OControls.setText(view, R.id.email, (row.getString("email").equals("false") ? " "
-                : row.getString("email")));
+        OControls.setText(
+                view,
+                R.id.company_name,
+                (row.getString("company_name").equals("false"))
+                        ? ""
+                        : row.getString("company_name"));
+        OControls.setText(
+                view,
+                R.id.email,
+                (row.getString("email").equals("false") ? " " : row.getString("email")));
     }
 
     @Override
@@ -136,36 +142,47 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         }
         String selection = (args.size() > 0) ? where : null;
         String[] selectionArgs = (args.size() > 0) ? args.toArray(new String[args.size()]) : null;
-        return new CursorLoader(getActivity(), db().uri(),
-                null, selection, selectionArgs, "name");
+        return new CursorLoader(getActivity(), db().uri(), null, selection, selectionArgs, "name");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.changeCursor(data);
         if (data.getCount() > 0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    OControls.setGone(mView, R.id.loadingProgress);
-                    OControls.setVisible(mView, R.id.swipe_container);
-                    OControls.setGone(mView, R.id.data_list_no_item);
-                    setHasSwipeRefreshView(mView, R.id.swipe_container, Customers.this);
-                }
-            }, 500);
+            new Handler()
+                    .postDelayed(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    OControls.setGone(mView, R.id.loadingProgress);
+                                    OControls.setVisible(mView, R.id.swipe_container);
+                                    OControls.setGone(mView, R.id.data_list_no_item);
+                                    setHasSwipeRefreshView(
+                                            mView, R.id.swipe_container, Customers.this);
+                                }
+                            },
+                            500);
         } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    OControls.setGone(mView, R.id.loadingProgress);
-                    OControls.setGone(mView, R.id.swipe_container);
-                    OControls.setVisible(mView, R.id.data_list_no_item);
-                    setHasSwipeRefreshView(mView, R.id.data_list_no_item, Customers.this);
-                    OControls.setImage(mView, R.id.icon, R.drawable.ic_action_customers);
-                    OControls.setText(mView, R.id.title, _s(R.string.label_no_customer_found));
-                    OControls.setText(mView, R.id.subTitle, "");
-                }
-            }, 500);
+            new Handler()
+                    .postDelayed(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    OControls.setGone(mView, R.id.loadingProgress);
+                                    OControls.setGone(mView, R.id.swipe_container);
+                                    OControls.setVisible(mView, R.id.data_list_no_item);
+                                    setHasSwipeRefreshView(
+                                            mView, R.id.data_list_no_item, Customers.this);
+                                    OControls.setImage(
+                                            mView, R.id.icon, R.drawable.ic_action_customers);
+                                    OControls.setText(
+                                            mView,
+                                            R.id.title,
+                                            _s(R.string.label_no_customer_found));
+                                    OControls.setText(mView, R.id.subTitle, "");
+                                }
+                            },
+                            500);
             if (db().isEmptyTable() && !syncRequested) {
                 syncRequested = true;
                 onRefresh();
@@ -186,18 +203,24 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
     @Override
     public List<ODrawerItem> drawerMenus(Context context) {
         List<ODrawerItem> items = new ArrayList<>();
-        items.add(new ODrawerItem(KEY).setTitle("Customers")
-                .setIcon(R.drawable.ic_action_customers)
-                .setExtra(extra(Type.Customer))
-                .setInstance(new Customers()));
-        items.add(new ODrawerItem(KEY).setTitle("Suppliers")
-                .setIcon(R.drawable.ic_action_suppliers)
-                .setExtra(extra(Type.Supplier))
-                .setInstance(new Customers()));
-        items.add(new ODrawerItem(KEY).setTitle("Companies")
-                .setIcon(R.drawable.ic_action_company)
-                .setExtra(extra(Type.Company))
-                .setInstance(new Customers()));
+        items.add(
+                new ODrawerItem(KEY)
+                        .setTitle("Customers")
+                        .setIcon(R.drawable.ic_action_customers)
+                        .setExtra(extra(Type.Customer))
+                        .setInstance(new Customers()));
+        items.add(
+                new ODrawerItem(KEY)
+                        .setTitle("Suppliers")
+                        .setIcon(R.drawable.ic_action_suppliers)
+                        .setExtra(extra(Type.Supplier))
+                        .setInstance(new Customers()));
+        items.add(
+                new ODrawerItem(KEY)
+                        .setTitle("Companies")
+                        .setIcon(R.drawable.ic_action_company)
+                        .setExtra(extra(Type.Company))
+                        .setInstance(new Customers()));
         return items;
     }
 
@@ -207,13 +230,11 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         return extra;
     }
 
-
     @Override
     public void onStatusChange(Boolean refreshing) {
         // Sync Status
         getLoaderManager().restartLoader(0, null, this);
     }
-
 
     @Override
     public void onRefresh() {
@@ -256,10 +277,9 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fabButton:
-                loadActivity(null);
-                break;
+        int id = v.getId();
+        if (id == R.id.fabButton) {
+            loadActivity(null);
         }
     }
 
@@ -271,7 +291,6 @@ public class Customers extends BaseFragment implements ISyncStatusObserverListen
         data.putString(CustomerDetails.KEY_PARTNER_TYPE, mType.toString());
         IntentUtils.startActivity(getActivity(), CustomerDetails.class, data);
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 8/1/15 11:39 AM
+ * <p>Created on 8/1/15 11:39 AM
  */
 package com.odoo.core.support.sync;
 
@@ -24,7 +21,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.odoo.core.support.OUser;
 
 public class SyncUtils {
@@ -71,17 +67,18 @@ public class SyncUtils {
         ContentResolver.requestSync(account, authority, settingsBundle);
     }
 
-    public void setSyncPeriodic(String authority, long interval_in_minute,
-                                long seconds_per_minute, long milliseconds_per_second) {
+    public void setSyncPeriodic(
+            String authority,
+            long interval_in_minute,
+            long seconds_per_minute,
+            long milliseconds_per_second) {
         Account account = mUser.getAccount();
         Bundle extras = new Bundle();
         this.setAutoSync(authority, true);
         ContentResolver.setIsSyncable(account, authority, 1);
-        final long sync_interval = interval_in_minute * seconds_per_minute
-                * milliseconds_per_second;
-        ContentResolver.addPeriodicSync(account, authority, extras,
-                sync_interval);
-
+        final long sync_interval =
+                interval_in_minute * seconds_per_minute * milliseconds_per_second;
+        ContentResolver.addPeriodicSync(account, authority, extras, sync_interval);
     }
 
     public void cancelSync(String authority) {

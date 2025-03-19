@@ -2,17 +2,16 @@ package com.odoo.widgets.slider;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class SliderPagerAdapter extends FragmentStatePagerAdapter {
         bundle.putInt(KEY_POSITION, position);
         frag.setArguments(bundle);
         return frag;
-
     }
 
     public void initPager(Context context, List<SliderItem> items) {
@@ -50,18 +48,18 @@ public class SliderPagerAdapter extends FragmentStatePagerAdapter {
 
     class PageFragment extends Fragment {
         @Override
-        public View onCreateView(LayoutInflater inflater,
-                                 @Nullable ViewGroup container,
-                                 @Nullable Bundle savedInstanceState) {
+        public View onCreateView(
+                LayoutInflater inflater,
+                @Nullable ViewGroup container,
+                @Nullable Bundle savedInstanceState) {
             View layout = null;
             int pos = getPosition();
             SliderItem item = mItems.get(pos);
             if (item.getSliderCustomViewListener() != null) {
-                layout = item.getSliderCustomViewListener().getCustomView(
-                        mContext, item, container);
+                layout =
+                        item.getSliderCustomViewListener().getCustomView(mContext, item, container);
             } else {
-                layout = (LinearLayout) inflater.inflate(R.layout.default_ui,
-                        container, false);
+                layout = (LinearLayout) inflater.inflate(R.layout.default_ui, container, false);
             }
             return layout;
         }
@@ -71,8 +69,7 @@ public class SliderPagerAdapter extends FragmentStatePagerAdapter {
             int pos = getPosition();
             SliderItem item = mItems.get(pos);
             if (item.getSliderCustomViewListener() == null) {
-                ImageView imgPic = (ImageView) view
-                        .findViewById(R.id.view_image);
+                ImageView imgPic = (ImageView) view.findViewById(R.id.view_image);
                 TextView txvTitle, txvContent;
                 txvTitle = (TextView) view.findViewById(R.id.view_title);
                 txvContent = (TextView) view.findViewById(R.id.view_content);
@@ -85,12 +82,9 @@ public class SliderPagerAdapter extends FragmentStatePagerAdapter {
         private int getPosition() {
             return getArguments().getInt(KEY_POSITION);
         }
-
     }
 
     public interface SliderBuilderListener {
-        public View getCustomView(Context context, SliderItem item,
-                                  ViewGroup parent);
+        public View getCustomView(Context context, SliderItem item, ViewGroup parent);
     }
-
 }

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 30/12/14 3:31 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 30/12/14 3:31 PM
  */
 package com.odoo.core.orm;
 
@@ -27,7 +24,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.odoo.App;
 import com.odoo.BuildConfig;
 import com.odoo.base.addons.ir.IrModel;
@@ -51,7 +47,6 @@ import com.odoo.core.utils.ODateUtils;
 import com.odoo.core.utils.OListUtils;
 import com.odoo.core.utils.OStorageUtils;
 import com.odoo.core.utils.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -69,7 +64,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-
 
 public class OModel implements ISyncServiceListener {
 
@@ -90,23 +84,20 @@ public class OModel implements ISyncServiceListener {
 
     // Base Columns
     OColumn id = new OColumn("ID", OInteger.class).setDefaultValue(0);
-    @Odoo.api.v8
-    @Odoo.api.v9
-    @Odoo.api.v10
-    @Odoo.api.v11alpha
+
+    @Odoo.api.v8 @Odoo.api.v9 @Odoo.api.v10 @Odoo.api.v11alpha
     public OColumn create_date = new OColumn("Created On", ODateTime.class);
 
-    @Odoo.api.v8
-    @Odoo.api.v9
-    @Odoo.api.v10
-    @Odoo.api.v11alpha
+    @Odoo.api.v8 @Odoo.api.v9 @Odoo.api.v10 @Odoo.api.v11alpha
     public OColumn write_date = new OColumn("Last Updated On", ODateTime.class);
 
     // Local Base columns
     OColumn _id = new OColumn("_ID", OInteger.class).setAutoIncrement().setLocalColumn();
     OColumn _write_date = new OColumn("Local Write Date", ODateTime.class).setLocalColumn();
-    OColumn _is_dirty = new OColumn("Dirty record", OBoolean.class).setDefaultValue(false).setLocalColumn();
-    OColumn _is_active = new OColumn("Active Record", OBoolean.class).setDefaultValue(true).setLocalColumn();
+    OColumn _is_dirty =
+            new OColumn("Dirty record", OBoolean.class).setDefaultValue(false).setLocalColumn();
+    OColumn _is_active =
+            new OColumn("Active Record", OBoolean.class).setDefaultValue(true).setLocalColumn();
 
     public OModel(Context context, String model_name, OUser user) {
         mContext = context;
@@ -186,9 +177,7 @@ public class OModel implements ISyncServiceListener {
     public List<OColumn> getColumns(Boolean local) {
         if (local != null) {
             List<OColumn> cols = new ArrayList<>();
-            for (OColumn column : getColumns())
-                if (local == column.isLocal())
-                    cols.add(column);
+            for (OColumn column : getColumns()) if (local == column.isLocal()) cols.add(column);
             return cols;
         } else {
             return mColumns;
@@ -196,14 +185,12 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<OColumn> getRelationColumns() {
-        if (mColumns.size() <= 0)
-            prepareFields();
+        if (mColumns.size() <= 0) prepareFields();
         return mRelationColumns;
     }
 
     public OColumn getColumn(String column_name) {
-        if (mDeclaredFields.size() <= 0)
-            prepareFields();
+        if (mDeclaredFields.size() <= 0) prepareFields();
         Field filed = mDeclaredFields.get(column_name);
         return getColumn(filed);
     }
@@ -214,8 +201,7 @@ public class OModel implements ISyncServiceListener {
             try {
                 field.setAccessible(true);
                 column = (OColumn) field.get(this);
-                if (column.getName() == null)
-                    column.setName(field.getName());
+                if (column.getName() == null) column.setName(field.getName());
                 Boolean validField = compatibleField(field);
                 if (validField) {
                     // Functional Method
@@ -305,7 +291,6 @@ public class OModel implements ISyncServiceListener {
         return false;
     }
 
-
     /**
      * Gets the functional depends.
      *
@@ -327,10 +312,8 @@ public class OModel implements ISyncServiceListener {
             Odoo.Functional functional = (Odoo.Functional) annotation;
             String method_name = functional.method();
             try {
-                if (functional.store())
-                    return getClass().getMethod(method_name, OValues.class);
-                else
-                    return getClass().getMethod(method_name, ODataRow.class);
+                if (functional.store()) return getClass().getMethod(method_name, OValues.class);
+                else return getClass().getMethod(method_name, ODataRow.class);
             } catch (NoSuchMethodException e) {
                 Log.e(TAG, "No Such Method: " + e.getMessage());
             }
@@ -425,8 +408,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<OColumn> getFunctionalColumns() {
-        if (mColumns.size() <= 0)
-            prepareFields();
+        if (mColumns.size() <= 0) prepareFields();
         return mFunctionalColumns;
     }
 
@@ -444,12 +426,16 @@ public class OModel implements ISyncServiceListener {
         cols.add(_is_active);
 
         OColumn base_id = new OColumn("Base Id", OInteger.class);
-        base_id.setName(column.getRelBaseColumn() != null ? column.getRelBaseColumn()
-                : getTableName() + "_id");
+        base_id.setName(
+                column.getRelBaseColumn() != null
+                        ? column.getRelBaseColumn()
+                        : getTableName() + "_id");
         cols.add(base_id);
         OColumn relation_id = new OColumn("Relation Id", OInteger.class);
-        relation_id.setName(column.getRelRelationColumn() != null ?
-                column.getRelRelationColumn() : relation_model.getTableName() + "_id");
+        relation_id.setName(
+                column.getRelRelationColumn() != null
+                        ? column.getRelRelationColumn()
+                        : relation_model.getTableName() + "_id");
         cols.add(relation_id);
         return cols;
     }
@@ -578,7 +564,8 @@ public class OModel implements ISyncServiceListener {
     }
 
     public ODataRow browse(String[] projection, int row_id) {
-        List<ODataRow> rows = select(projection, OColumn.ROW_ID + " = ?", new String[]{row_id + ""});
+        List<ODataRow> rows =
+                select(projection, OColumn.ROW_ID + " = ?", new String[] {row_id + ""});
         if (rows.size() > 0) {
             return rows.get(0);
         }
@@ -595,7 +582,7 @@ public class OModel implements ISyncServiceListener {
 
     public List<Integer> getServerIds() {
         List<Integer> ids = new ArrayList<>();
-        for (ODataRow row : select(new String[]{"id"})) {
+        for (ODataRow row : select(new String[] {"id"})) {
             if (row.getInt("id") != 0) {
                 ids.add(row.getInt("id"));
             }
@@ -609,16 +596,16 @@ public class OModel implements ISyncServiceListener {
 
     public String getLastSyncDateTime() {
         IrModel model = new IrModel(mContext, mUser);
-        List<ODataRow> records = model.select(null, "model = ?", new String[]{getModelName()});
+        List<ODataRow> records = model.select(null, "model = ?", new String[] {getModelName()});
         if (records.size() > 0) {
             String date = records.get(0).getString("last_synced");
             Date write_date = ODateUtils.createDateObject(date, ODateUtils.DEFAULT_FORMAT, true);
             Calendar cal = Calendar.getInstance();
             cal.setTime(write_date);
             /*
-                Fixed for Postgres SQL
-                It stores milliseconds so comparing date wrong. 
-             */
+               Fixed for Postgres SQL
+               It stores milliseconds so comparing date wrong.
+            */
             cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 2);
             write_date = cal.getTime();
             return ODateUtils.getDate(write_date, ODateUtils.DEFAULT_FORMAT);
@@ -638,9 +625,11 @@ public class OModel implements ISyncServiceListener {
         return select(projection, where, args, null);
     }
 
-    public List<ODataRow> select(String[] projection, String where, String[] args, String sortOrder) {
-        Cursor cr = mContext.getContentResolver().query(uri(),
-                updateProjection(projection), where, args, sortOrder);
+    public List<ODataRow> select(
+            String[] projection, String where, String[] args, String sortOrder) {
+        Cursor cr =
+                mContext.getContentResolver()
+                        .query(uri(), updateProjection(projection), where, args, sortOrder);
         List<ODataRow> rows = new ArrayList<>();
         try {
             if (cr != null && cr.moveToFirst()) {
@@ -652,15 +641,21 @@ public class OModel implements ISyncServiceListener {
                                 || column.getRelationType() == OColumn.RelationType.ManyToMany) {
                             switch (column.getRelationType()) {
                                 case ManyToMany:
-                                    OM2MRecord m2mRecords = new OM2MRecord(this, column, row.getInt(OColumn.ROW_ID));
+                                    OM2MRecord m2mRecords =
+                                            new OM2MRecord(
+                                                    this, column, row.getInt(OColumn.ROW_ID));
                                     row.put(column.getName(), m2mRecords);
                                     break;
                                 case ManyToOne:
-                                    OM2ORecord m2ORecord = new OM2ORecord(this, column, row.getInt(column.getName()));
+                                    OM2ORecord m2ORecord =
+                                            new OM2ORecord(
+                                                    this, column, row.getInt(column.getName()));
                                     row.put(column.getName(), m2ORecord);
                                     break;
                                 case OneToMany:
-                                    OO2MRecord o2MRecord = new OO2MRecord(this, column, row.getInt(OColumn.ROW_ID));
+                                    OO2MRecord o2MRecord =
+                                            new OO2MRecord(
+                                                    this, column, row.getInt(OColumn.ROW_ID));
                                     row.put(column.getName(), o2MRecord);
                                     break;
                             }
@@ -725,8 +720,7 @@ public class OModel implements ISyncServiceListener {
             }
         } else {
             for (OColumn column : getFunctionalColumns()) {
-                if (!column.canFunctionalStore())
-                    cols.add(column);
+                if (!column.canFunctionalStore()) cols.add(column);
             }
         }
         return cols;
@@ -769,7 +763,15 @@ public class OModel implements ISyncServiceListener {
     public int selectRowId(String selection, String[] args) {
         int row_id = INVALID_ROW_ID;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cr = db.query(getTableName(), new String[]{OColumn.ROW_ID}, selection, args, null, null, null);
+        Cursor cr =
+                db.query(
+                        getTableName(),
+                        new String[] {OColumn.ROW_ID},
+                        selection,
+                        args,
+                        null,
+                        null,
+                        null);
         try {
             if (cr.moveToFirst()) {
                 row_id = cr.getInt(0);
@@ -785,7 +787,8 @@ public class OModel implements ISyncServiceListener {
     }
 
     public int selectRowId(int server_id) {
-        List<ODataRow> rows = select(new String[]{OColumn.ROW_ID}, "id = ?", new String[]{server_id + ""});
+        List<ODataRow> rows =
+                select(new String[] {OColumn.ROW_ID}, "id = ?", new String[] {server_id + ""});
         if (rows.size() > 0) {
             return rows.get(0).getInt(OColumn.ROW_ID);
         }
@@ -800,22 +803,20 @@ public class OModel implements ISyncServiceListener {
         return INVALID_ROW_ID;
     }
 
-
     public boolean hasServerRecord(int server_id) {
-        int count = count("id = ? ", new String[]{server_id + ""});
+        int count = count("id = ? ", new String[] {server_id + ""});
         return (count > 0);
     }
 
     public boolean isServerRecordDirty(int server_id) {
-        int count = count("id = ? and _is_dirty = ?", new String[]{server_id + "", "true"});
+        int count = count("id = ? and _is_dirty = ?", new String[] {server_id + "", "true"});
         return (count > 0);
     }
 
     public boolean hasRecord(int row_id) {
-        int count = count(OColumn.ROW_ID + " = ? ", new String[]{row_id + ""});
+        int count = count(OColumn.ROW_ID + " = ? ", new String[] {row_id + ""});
         return (count > 0);
     }
-
 
     public int deleteRecords(List<Integer> serverIds, boolean permanently) {
         String selection = "id IN (" + StringUtils.repeat("?, ", serverIds.size() - 1) + " ?)";
@@ -838,7 +839,7 @@ public class OModel implements ISyncServiceListener {
         if (permanently) {
             count = mContext.getContentResolver().delete(uri(), selection, args);
         } else {
-            List<ODataRow> records = select(new String[]{"_is_active"}, selection, args);
+            List<ODataRow> records = select(new String[] {"_is_active"}, selection, args);
             for (ODataRow row : records) {
                 if (row.getBoolean("_is_active")) {
                     OValues values = new OValues();
@@ -858,7 +859,9 @@ public class OModel implements ISyncServiceListener {
     public boolean delete(int row_id, boolean permanently) {
         int count = 0;
         if (permanently)
-            count = mContext.getContentResolver().delete(Uri.withAppendedPath(uri(), row_id + ""), null, null);
+            count =
+                    mContext.getContentResolver()
+                            .delete(Uri.withAppendedPath(uri(), row_id + ""), null, null);
         else {
             OValues values = new OValues();
             values.put("_is_active", "false");
@@ -869,15 +872,20 @@ public class OModel implements ISyncServiceListener {
     }
 
     public int update(String selection, String[] args, OValues values) {
-        return mContext.getContentResolver().update(uri(), values.toContentValues(), selection, args);
+        return mContext.getContentResolver()
+                .update(uri(), values.toContentValues(), selection, args);
     }
 
     public boolean update(int row_id, OValues values) {
-        int count = mContext.getContentResolver().update(Uri.withAppendedPath(uri(), row_id + ""),
-                values.toContentValues(), null, null);
+        int count =
+                mContext.getContentResolver()
+                        .update(
+                                Uri.withAppendedPath(uri(), row_id + ""),
+                                values.toContentValues(),
+                                null,
+                                null);
         return count > 0;
     }
-
 
     public List<ODataRow> query(String query) {
         return query(query, null);
@@ -897,13 +905,20 @@ public class OModel implements ISyncServiceListener {
             cr.close();
         }
         return rows;
-
     }
 
     public int count(String selection, String[] args) {
         int count = 0;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cr = db.query(getTableName(), new String[]{"count(*)"}, selection, args, null, null, null);
+        Cursor cr =
+                db.query(
+                        getTableName(),
+                        new String[] {"count(*)"},
+                        selection,
+                        args,
+                        null,
+                        null,
+                        null);
         try {
             cr.moveToFirst();
             count = cr.getInt(0);
@@ -913,15 +928,13 @@ public class OModel implements ISyncServiceListener {
         return count;
     }
 
-
     /**
-     * Handle record values for insert, update, delete operation with relation columns
-     * Each record have different behaviour, appending, deleting, unlink reference and
-     * replacing with new list
+     * Handle record values for insert, update, delete operation with relation columns Each record
+     * have different behaviour, appending, deleting, unlink reference and replacing with new list
      *
      * @param record_id Main record id on which relation values affected
-     * @param column    column object of the record (for relation column only)
-     * @param values    values list with commands (@see RelCommands)
+     * @param column column object of the record (for relation column only)
+     * @param values values list with commands (@see RelCommands)
      */
     public void handleRelationValues(int record_id, OColumn column, RelValues values) {
         OModel relModel = createInstance(column.getType());
@@ -938,14 +951,21 @@ public class OModel implements ISyncServiceListener {
         }
     }
 
-    private void handleOneToManyRecords(OColumn column, RelCommands commands, OModel relModel,
-                                        int record_id, HashMap<RelCommands, List<Object>> values) {
+    private void handleOneToManyRecords(
+            OColumn column,
+            RelCommands commands,
+            OModel relModel,
+            int record_id,
+            HashMap<RelCommands, List<Object>> values) {
         if (commands == RelCommands.Replace) {
             // Force to unlink record even no any other record values available.
             OValues old_values = new OValues();
             old_values.put(column.getRelatedColumn(), 0);
-            int count = relModel.update(column.getRelatedColumn() + " = ?", new String[]{record_id + ""},
-                    old_values);
+            int count =
+                    relModel.update(
+                            column.getRelatedColumn() + " = ?",
+                            new String[] {record_id + ""},
+                            old_values);
             Log.i(TAG, String.format("#%d references removed " + relModel.getModelName(), count));
         }
         for (Object rowObj : values.get(commands)) {
@@ -988,34 +1008,53 @@ public class OModel implements ISyncServiceListener {
         }
     }
 
-    private void handleManyToManyRecords(OColumn column, RelCommands command, OModel relModel,
-                                         int record_id, HashMap<RelCommands, List<Object>> values) {
+    private void handleManyToManyRecords(
+            OColumn column,
+            RelCommands command,
+            OModel relModel,
+            int record_id,
+            HashMap<RelCommands, List<Object>> values) {
 
-        String table = column.getRelTableName() != null ? column.getRelTableName() :
-                getTableName() + "_" + relModel.getTableName() + "_rel";
-        String base_column = column.getRelBaseColumn() != null ? column.getRelBaseColumn() :
-                getTableName() + "_id";
-        String rel_column = column.getRelRelationColumn() != null ? column.getRelRelationColumn() :
-                relModel.getTableName() + "_id";
+        String table =
+                column.getRelTableName() != null
+                        ? column.getRelTableName()
+                        : getTableName() + "_" + relModel.getTableName() + "_rel";
+        String base_column =
+                column.getRelBaseColumn() != null
+                        ? column.getRelBaseColumn()
+                        : getTableName() + "_id";
+        String rel_column =
+                column.getRelRelationColumn() != null
+                        ? column.getRelRelationColumn()
+                        : relModel.getTableName() + "_id";
         SQLiteDatabase db = getWritableDatabase();
         switch (command) {
             case Append:
                 // Inserting each relation id with base record id to relation table
                 List<Object> append_items = values.get(command);
-                StringBuilder sql = new StringBuilder("INSERT INTO ").append(table)
-                        .append(" (")
-                        .append(base_column).append(", ")
-                        .append(rel_column)
-                        .append(", _write_date )").append(" VALUES ");
+                StringBuilder sql =
+                        new StringBuilder("INSERT INTO ")
+                                .append(table)
+                                .append(" (")
+                                .append(base_column)
+                                .append(", ")
+                                .append(rel_column)
+                                .append(", _write_date )")
+                                .append(" VALUES ");
                 for (Object obj : append_items) {
                     int id;
                     if (obj instanceof OValues) {
                         Log.d(TAG, "creating quick record for many to many ");
                         id = relModel.insert((OValues) obj);
                     } else id = (int) obj;
-                    sql.append(" (").append(record_id).append(",")
-                            .append(id).append(", ")
-                            .append("'").append(ODateUtils.getUTCDate()).append("'), ");
+                    sql.append(" (")
+                            .append(record_id)
+                            .append(",")
+                            .append(id)
+                            .append(", ")
+                            .append("'")
+                            .append(ODateUtils.getUTCDate())
+                            .append("'), ");
                 }
                 String statement = sql.substring(0, sql.length() - 2);
                 db.execSQL(statement);
@@ -1036,14 +1075,30 @@ public class OModel implements ISyncServiceListener {
                 handleManyToManyRecords(column, RelCommands.Unlink, relModel, record_id, values);
 
                 // Deleting master record from relation model with given ids
-                String deleteSql = "DELETE FROM " + relModel.getTableName() + " WHERE " + OColumn.ROW_ID + " IN (" +
-                        TextUtils.join(",", values.get(command)) + ")";
+                String deleteSql =
+                        "DELETE FROM "
+                                + relModel.getTableName()
+                                + " WHERE "
+                                + OColumn.ROW_ID
+                                + " IN ("
+                                + TextUtils.join(",", values.get(command))
+                                + ")";
                 db.execSQL(deleteSql);
                 break;
             case Unlink:
                 // Unlink relation with base record
-                String unlinkSQL = "DELETE FROM " + table + " WHERE " + base_column + " = " + record_id + " AND " + rel_column + " IN (" +
-                        TextUtils.join(",", values.get(command)) + ")";
+                String unlinkSQL =
+                        "DELETE FROM "
+                                + table
+                                + " WHERE "
+                                + base_column
+                                + " = "
+                                + record_id
+                                + " AND "
+                                + rel_column
+                                + " IN ("
+                                + TextUtils.join(",", values.get(command))
+                                + ")";
                 db.execSQL(unlinkSQL);
                 break;
         }
@@ -1051,23 +1106,37 @@ public class OModel implements ISyncServiceListener {
         db.close();
     }
 
-    public List<ODataRow> selectManyToManyRecords(String[] projection, String column_name, int row_id) {
+    public List<ODataRow> selectManyToManyRecords(
+            String[] projection, String column_name, int row_id) {
         OColumn column = getColumn(column_name);
         OModel rel_model = createInstance(column.getType());
-        String table = column.getRelTableName() != null ? column.getRelTableName() :
-                getTableName() + "_" + rel_model.getTableName() + "_rel";
-        String base_column = column.getRelBaseColumn() != null ? column.getRelBaseColumn() :
-                getTableName() + "_id";
-        String rel_column = column.getRelRelationColumn() != null ? column.getRelRelationColumn() :
-                rel_model.getTableName() + "_id";
+        String table =
+                column.getRelTableName() != null
+                        ? column.getRelTableName()
+                        : getTableName() + "_" + rel_model.getTableName() + "_rel";
+        String base_column =
+                column.getRelBaseColumn() != null
+                        ? column.getRelBaseColumn()
+                        : getTableName() + "_id";
+        String rel_column =
+                column.getRelRelationColumn() != null
+                        ? column.getRelRelationColumn()
+                        : rel_model.getTableName() + "_id";
 
         // Getting relation table ids
         List<String> ids = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cr = null;
         try {
-            cr = db.query(table, new String[]{rel_column}, base_column + "=?",
-                    new String[]{row_id + ""}, null, null, null);
+            cr =
+                    db.query(
+                            table,
+                            new String[] {rel_column},
+                            base_column + "=?",
+                            new String[] {row_id + ""},
+                            null,
+                            null,
+                            null);
             if (cr.moveToFirst()) {
                 do {
                     ids.add(cr.getInt(0) + "");
@@ -1078,8 +1147,14 @@ public class OModel implements ISyncServiceListener {
                 cr.close();
             }
         }
-        List<ODataRow> data = rel_model.select(projection, OColumn.ROW_ID + " IN (" + StringUtils.repeat(" ?, ", ids.size() - 1) + " ?)",
-                ids.toArray(new String[ids.size()]));
+        List<ODataRow> data =
+                rel_model.select(
+                        projection,
+                        OColumn.ROW_ID
+                                + " IN ("
+                                + StringUtils.repeat(" ?, ", ids.size() - 1)
+                                + " ?)",
+                        ids.toArray(new String[ids.size()]));
         rel_model.close();
         return data;
     }
@@ -1101,7 +1176,8 @@ public class OModel implements ISyncServiceListener {
         syncAdapter.setModel(this);
         syncAdapter.setDomain(domain);
         syncAdapter.checkForWriteCreateDate(false);
-        syncAdapter.onPerformSync(getUser().getAccount(), null, authority(), null, new SyncResult());
+        syncAdapter.onPerformSync(
+                getUser().getAccount(), null, authority(), null, new SyncResult());
     }
 
     public ODataRow quickCreateRecord(ODataRow record) {
@@ -1111,8 +1187,9 @@ public class OModel implements ISyncServiceListener {
         domain.add("id", "=", record.getFloat("id").intValue());
         syncAdapter.setDomain(domain);
         syncAdapter.checkForWriteCreateDate(false);
-        syncAdapter.onPerformSync(getUser().getAccount(), null, authority(), null, new SyncResult());
-        return browse(null, "id = ?", new String[]{record.getString("id")});
+        syncAdapter.onPerformSync(
+                getUser().getAccount(), null, authority(), null, new SyncResult());
+        return browse(null, "id = ?", new String[] {record.getString("id")});
     }
 
     public ODataRow countGroupBy(String column, String group_by, String having, String[] args) {
@@ -1130,17 +1207,21 @@ public class OModel implements ISyncServiceListener {
 
     public void isInstalledOnServer(final String module_name, IModuleInstallListener callback) {
         App app = (App) mContext.getApplicationContext();
-        app.getOdoo(getUser()).installedOnServer(module_name, new IModuleInstallListener() {
-            @Override
-            public void installedOnServer(boolean isInstalled) {
-                IrModel model = new IrModel(mContext, getUser());
-                OValues values = new OValues();
-                values.put("id", 0);
-                values.put("name", module_name);
-                values.put("state", "installed");
-                model.insertOrUpdate("name = ?", new String[]{module_name}, values);
-            }
-        });
+        app.getOdoo(getUser())
+                .installedOnServer(
+                        module_name,
+                        new IModuleInstallListener() {
+                            @Override
+                            public void installedOnServer(boolean isInstalled) {
+                                IrModel model = new IrModel(mContext, getUser());
+                                OValues values = new OValues();
+                                values.put("id", 0);
+                                values.put("name", module_name);
+                                values.put("state", "installed");
+                                model.insertOrUpdate(
+                                        "name = ?", new String[] {module_name}, values);
+                            }
+                        });
     }
 
     public String getDatabaseLocalPath() {
@@ -1151,8 +1232,7 @@ public class OModel implements ISyncServiceListener {
         FileChannel source;
         FileChannel destination;
         String currentDBPath = getDatabaseLocalPath();
-        String backupDBPath = OStorageUtils.getDirectoryPath("file")
-                + "/" + getDatabaseName();
+        String backupDBPath = OStorageUtils.getDirectoryPath("file") + "/" + getDatabaseName();
         File currentDB = new File(currentDBPath);
         File backupDB = new File(backupDBPath);
         try {

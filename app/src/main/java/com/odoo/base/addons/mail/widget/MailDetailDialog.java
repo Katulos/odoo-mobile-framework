@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 25/2/15 6:26 PM
+ * <p>Created on 25/2/15 6:26 PM
  */
 package com.odoo.base.addons.mail.widget;
 
@@ -32,7 +29,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.odoo.R;
 import com.odoo.base.addons.ir.feature.OFileManager;
 import com.odoo.base.addons.mail.MailMessage;
@@ -45,7 +41,6 @@ import com.odoo.core.utils.IntentUtils;
 import com.odoo.core.utils.OControls;
 import com.odoo.core.utils.ODateUtils;
 import com.odoo.core.utils.OStringColorUtil;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +62,9 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.base_mail_chatter_message_detail);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow()
+                .setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         fileManager = new OFileManager(this);
         mailMessage = new MailMessage(this, null);
         extra = getIntent().getExtras();
@@ -86,7 +83,8 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
             loadAttachments.execute();
         }
         horizontalScrollView = (LinearLayout) findViewById(R.id.attachmentsList);
-        baseModel = OModel.get(this, row.getString("model"), mailMessage.getUser().getAndroidName());
+        baseModel =
+                OModel.get(this, row.getString("model"), mailMessage.getUser().getAndroidName());
         ODataRow record = baseModel.browse(baseModel.selectRowId(row.getInt("res_id")));
         String name = record.getString(baseModel.getDefaultNameColumn());
         recordName.setText(name);
@@ -94,8 +92,7 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
 
         if (!row.getString("subject").equals("false"))
             OControls.setText(parent, R.id.messageSubject, row.getString("subject"));
-        else
-            OControls.setGone(parent, R.id.messageSubject);
+        else OControls.setGone(parent, R.id.messageSubject);
 
         WebView messageBody = (WebView) findViewById(R.id.messageBody);
         messageBody.setBackgroundColor(Color.TRANSPARENT);
@@ -108,8 +105,9 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
         }
         OControls.setImage(parent, R.id.author_image, author_image);
         OControls.setText(parent, R.id.authorName, row.getString("author_name"));
-        String date = ODateUtils.convertToDefault(row.getString("date"),
-                ODateUtils.DEFAULT_FORMAT, "MMM dd, yyyy hh:mm a");
+        String date =
+                ODateUtils.convertToDefault(
+                        row.getString("date"), ODateUtils.DEFAULT_FORMAT, "MMM dd, yyyy hh:mm a");
         OControls.setText(parent, R.id.messageDate, date);
     }
 
@@ -117,21 +115,23 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
 
         @Override
         protected Void doInBackground(Void... params) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (ODataRow row : attachments) {
-                        addAttachment(row);
-                    }
-                }
-            });
+            runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            for (ODataRow row : attachments) {
+                                addAttachment(row);
+                            }
+                        }
+                    });
             return null;
         }
     }
 
     private void addAttachment(ODataRow values) {
-        View attachmentView = LayoutInflater.from(this)
-                .inflate(R.layout.base_attachment_item, horizontalScrollView, false);
+        View attachmentView =
+                LayoutInflater.from(this)
+                        .inflate(R.layout.base_attachment_item, horizontalScrollView, false);
         String fileName = values.getString("name");
         String type = values.getString("file_type");
         ImageView imgPreview = (ImageView) attachmentView.findViewById(R.id.attachmentPreview);
@@ -139,8 +139,7 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
             if (!values.getString("file_uri").equals("false")) {
                 Uri uri = Uri.parse(new File(values.getString("file_uri")).toString());
                 imgPreview.setImageBitmap(fileManager.getBitmapFromURI(uri));
-            } else
-                imgPreview.setImageResource(R.drawable.image);
+            } else imgPreview.setImageResource(R.drawable.image);
         } else if (type.contains("audio")) {
             imgPreview.setImageResource(R.drawable.audio);
         } else if (type.contains("video")) {
@@ -161,15 +160,13 @@ public class MailDetailDialog extends OdooCompatActivity implements View.OnClick
             ODataRow attachment = (ODataRow) v.getTag();
             fileManager.downloadAttachment(attachment.getInt(OColumn.ROW_ID));
         } else {
-            switch (v.getId()) {
-                case R.id.btnClose:
-                    finish();
-                    break;
-                case R.id.btnReply:
-                    extra.putString("type", MailChatterCompose.MessageType.Message.toString());
-                    IntentUtils.startActivity(this, MailChatterCompose.class, extra);
-                    finish();
-                    break;
+            int id = v.getId();
+            if (id == R.id.btnClose) {
+                finish();
+            } else if (id == R.id.btnReply) {
+                extra.putString("type", MailChatterCompose.MessageType.Message.toString());
+                IntentUtils.startActivity(this, MailChatterCompose.class, extra);
+                finish();
             }
         }
     }

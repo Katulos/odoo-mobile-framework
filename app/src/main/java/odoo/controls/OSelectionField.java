@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 7/1/15 5:11 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 7/1/15 5:11 PM
  */
 package odoo.controls;
 
@@ -28,9 +25,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +39,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OM2ORecord;
 import com.odoo.core.orm.OModel;
@@ -52,14 +47,15 @@ import com.odoo.core.orm.OValues;
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.types.OSelection;
 import com.odoo.core.utils.OControls;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class OSelectionField extends LinearLayout implements IOControlData,
-        AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener,
-        RadioGroup.OnCheckedChangeListener {
+public class OSelectionField extends LinearLayout
+        implements IOControlData,
+                AdapterView.OnItemSelectedListener,
+                AdapterView.OnItemClickListener,
+                RadioGroup.OnCheckedChangeListener {
     public static final String TAG = OSelectionField.class.getSimpleName();
 
     private Context mContext;
@@ -84,8 +80,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
     private OForm formView;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OSelectionField(Context context, AttributeSet attrs,
-                           int defStyleAttr, int defStyleRes) {
+    public OSelectionField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -105,19 +100,16 @@ public class OSelectionField extends LinearLayout implements IOControlData,
         init(context, null, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (attrs != null) {
+        if (attrs != null) {}
 
-        }
-        if (mContext.getClass().getSimpleName().contains("BridgeContext"))
-            initControl();
+        if (mContext.getClass().getSimpleName().contains("BridgeContext")) initControl();
     }
 
     private void createRadioGroup() {
-        final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        final LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         if (mRadioGroup == null) {
             mRadioGroup = new RadioGroup(mContext);
             mRadioGroup.setLayoutParams(params);
@@ -144,8 +136,8 @@ public class OSelectionField extends LinearLayout implements IOControlData,
 
     @Override
     public void initControl() {
-        final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        final LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         removeAllViews();
         setOrientation(VERTICAL);
         createItems();
@@ -158,19 +150,21 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                     case SelectionDialog:
                         txvView = new TextView(mContext);
                         txvView.setLayoutParams(params);
-                        mAdapter = new SpinnerAdapter(mContext,
-                                android.R.layout.simple_list_item_1, items);
-                        setOnClickListener(new OnClickListener() {
+                        mAdapter =
+                                new SpinnerAdapter(
+                                        mContext, android.R.layout.simple_list_item_1, items);
+                        setOnClickListener(
+                                new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
+                                    @Override
+                                    public void onClick(View v) {
 
-                                AlertDialog dialog = createSelectionDialog(
-                                        getPos(), items, params);
-                                txvView.setTag(dialog);
-                                dialog.show();
-                            }
-                        });
+                                        AlertDialog dialog =
+                                                createSelectionDialog(getPos(), items, params);
+                                        txvView.setTag(dialog);
+                                        dialog.show();
+                                    }
+                                });
                         if (textSize > -1) {
                             txvView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                         }
@@ -184,13 +178,14 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                     case SearchableLive:
                         txvView = new TextView(mContext);
                         txvView.setLayoutParams(params);
-                        setOnClickListener(new OnClickListener() {
+                        setOnClickListener(
+                                new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                startSearchableActivity();
-                            }
-                        });
+                                    @Override
+                                    public void onClick(View v) {
+                                        startSearchableActivity();
+                                    }
+                                });
                         if (textSize > -1) {
                             txvView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                         }
@@ -208,8 +203,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
             // Default View
             mSpinner = new Spinner(mContext);
             mSpinner.setLayoutParams(params);
-            mAdapter = new SpinnerAdapter(mContext,
-                    android.R.layout.simple_list_item_1, items);
+            mAdapter = new SpinnerAdapter(mContext, android.R.layout.simple_list_item_1, items);
             mSpinner.setAdapter(mAdapter);
             mSpinner.setOnItemSelectedListener(this);
             addView(mSpinner);
@@ -238,14 +232,17 @@ public class OSelectionField extends LinearLayout implements IOControlData,
             intent.putExtra("column_name", mCol.getName());
             if (mCol.hasDomainFilterColumn()) {
                 OValues formValues = formView.getControlValues();
-                Bundle formData = formValues != null ?
-                        formValues.toFilterColumnsBundle(mModel, mCol) : new Bundle();
+                Bundle formData =
+                        formValues != null
+                                ? formValues.toFilterColumnsBundle(mModel, mCol)
+                                : new Bundle();
                 intent.putExtra("form_data", formData);
             }
         }
         intent.putExtra("model", mModel.getModelName());
         intent.putExtra("live_search", (mWidget == OField.WidgetType.SearchableLive));
-        broadcastManager.registerReceiver(valueReceiver, new IntentFilter("searchable_value_select"));
+        broadcastManager.registerReceiver(
+                valueReceiver, new IntentFilter("searchable_value_select"));
         mContext.startActivity(intent);
     }
 
@@ -253,8 +250,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
         items.clear();
         if (!mContext.getClass().getSimpleName().contains("BridgeContext")) {
             if (mResourceArray != null && mResourceArray != -1) {
-                String[] items_list = mContext.getResources().getStringArray(
-                        mResourceArray);
+                String[] items_list = mContext.getResources().getStringArray(mResourceArray);
                 ODataRow row = new ODataRow();
                 row.put(OColumn.ROW_ID, -1);
                 row.put(mModel.getDefaultNameColumn(), "Nothing Selected");
@@ -282,8 +278,10 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                 items.addAll(rows);
             } else {
                 OValues formValues = formView.getControlValues();
-                Bundle data = formValues != null ? formValues
-                        .toFilterColumnsBundle(mModel, mCol) : new Bundle();
+                Bundle data =
+                        formValues != null
+                                ? formValues.toFilterColumnsBundle(mModel, mCol)
+                                : new Bundle();
                 items.addAll(getRecordItems(mModel, mCol, data));
             }
         }
@@ -323,16 +321,14 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                 switch (mWidget) {
                     case RadioGroup:
                         if (mResourceArray != -1) {
-                            ((RadioButton) mRadioGroup.getChildAt(getPos()))
-                                    .setChecked(true);
+                            ((RadioButton) mRadioGroup.getChildAt(getPos())).setChecked(true);
                             row = items.get(getPos());
                         } else {
                             Integer row_id;
                             if (mValue instanceof OM2ORecord) {
                                 row = ((OM2ORecord) mValue).browse();
                                 row_id = row.getInt(OColumn.ROW_ID);
-                            } else
-                                row_id = (Integer) mValue;
+                            } else row_id = (Integer) mValue;
                             int index = 0;
                             for (int i = 0; i < items.size(); i++) {
                                 if (items.get(i).getInt(OColumn.ROW_ID) == row_id) {
@@ -341,8 +337,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                                 }
                             }
                             row = items.get(index);
-                            ((RadioButton) mRadioGroup.getChildAt(index))
-                                    .setChecked(true);
+                            ((RadioButton) mRadioGroup.getChildAt(index)).setChecked(true);
                         }
                         break;
                     case Searchable:
@@ -351,8 +346,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                         if (mResourceArray != -1) {
                             row = items.get(getPos());
                         } else {
-                            if (mValue instanceof OM2ORecord)
-                                row = ((OM2ORecord) mValue).browse();
+                            if (mValue instanceof OM2ORecord) row = ((OM2ORecord) mValue).browse();
                             else if (mValue instanceof Integer)
                                 row = getRecordData((Integer) mValue);
                         }
@@ -381,8 +375,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                     if (mValue instanceof OM2ORecord) {
                         row = ((OM2ORecord) mValue).browse();
                         row_id = row.getInt(OColumn.ROW_ID);
-                    } else if (mValue instanceof Integer)
-                        row_id = (Integer) mValue;
+                    } else if (mValue instanceof Integer) row_id = (Integer) mValue;
                     int index = 0;
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).getInt(OColumn.ROW_ID) == row_id) {
@@ -406,12 +399,16 @@ public class OSelectionField extends LinearLayout implements IOControlData,
                         row = new ODataRow();
                     }
                 } else {
-                    if (!(mValue instanceof Boolean) && mValue != null && !mValue.toString().equals("false")) {
+                    if (!(mValue instanceof Boolean)
+                            && mValue != null
+                            && !mValue.toString().equals("false")) {
                         int row_id = (Integer) mValue;
                         row = getRecordData(row_id);
                     } else {
                         row = new ODataRow();
-                        row.put(mModel.getDefaultNameColumn(), "No " + mCol.getLabel() + " selected");
+                        row.put(
+                                mModel.getDefaultNameColumn(),
+                                "No " + mCol.getLabel() + " selected");
                     }
                 }
             }
@@ -429,19 +426,15 @@ public class OSelectionField extends LinearLayout implements IOControlData,
         return null;
     }
 
-
     @Override
     public void setError(String error) {
-        if (error != null)
-            Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
+        if (error != null) Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
     }
 
     private ODataRow getValueForM2O() {
         if (getValue() != null) {
-            if (getValue() instanceof OM2ORecord)
-                return ((OM2ORecord) getValue()).browse();
-            else if (getValue() instanceof Integer)
-                return getRecordData((Integer) getValue());
+            if (getValue() instanceof OM2ORecord) return ((OM2ORecord) getValue()).browse();
+            else if (getValue() instanceof Integer) return getRecordData((Integer) getValue());
         }
         return null;
     }
@@ -498,8 +491,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
 
     private class SpinnerAdapter extends ArrayAdapter<ODataRow> {
 
-        public SpinnerAdapter(Context context, int resource,
-                              List<ODataRow> objects) {
+        public SpinnerAdapter(Context context, int resource, List<ODataRow> objects) {
             super(context, resource, objects);
         }
 
@@ -508,17 +500,16 @@ public class OSelectionField extends LinearLayout implements IOControlData,
         }
 
         @Override
-        public View getDropDownView(int position, View convertView,
-                                    ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
             return generateView(position, convertView, parent);
         }
 
-        private View generateView(int position, View convertView,
-                                  ViewGroup parent) {
+        private View generateView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null)
-                v = LayoutInflater.from(mContext).inflate(
-                        android.R.layout.simple_list_item_1, parent, false);
+                v =
+                        LayoutInflater.from(mContext)
+                                .inflate(android.R.layout.simple_list_item_1, parent, false);
             ODataRow row = getItem(position);
             OControls.setText(v, android.R.id.text1, row.getString(mModel.getDefaultNameColumn()));
             return v;
@@ -526,8 +517,7 @@ public class OSelectionField extends LinearLayout implements IOControlData,
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position,
-                               long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (mResourceArray != -1) {
             mValue = position;
         } else if (mCol.getType().isAssignableFrom(OSelection.class)) {
@@ -551,15 +541,13 @@ public class OSelectionField extends LinearLayout implements IOControlData,
 
     @Override
     public String getLabel() {
-        if (mLabel != null)
-            return mLabel;
-        if (mCol != null)
-            return mCol.getLabel();
+        if (mLabel != null) return mLabel;
+        if (mCol != null) return mCol.getLabel();
         return "unknown";
     }
 
-    private AlertDialog createSelectionDialog(final int selected_position,
-                                              final List<ODataRow> items, LayoutParams params) {
+    private AlertDialog createSelectionDialog(
+            final int selected_position, final List<ODataRow> items, LayoutParams params) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         ListView dialogView = new ListView(mContext);
         dialogView.setAdapter(mAdapter);
@@ -570,21 +558,22 @@ public class OSelectionField extends LinearLayout implements IOControlData,
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         setValue(position);
     }
 
-    BroadcastReceiver valueReceiver = new BroadcastReceiver() {
+    BroadcastReceiver valueReceiver =
+            new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mCol.getName().equals(intent.getStringExtra("column_name"))) {
-                setValue(intent.getIntExtra("selected_position", -1));
-                LocalBroadcastManager.getInstance(mContext).unregisterReceiver(valueReceiver);
-            }
-        }
-    };
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (mCol.getName().equals(intent.getStringExtra("column_name"))) {
+                        setValue(intent.getIntExtra("selected_position", -1));
+                        LocalBroadcastManager.getInstance(mContext)
+                                .unregisterReceiver(valueReceiver);
+                    }
+                }
+            };
 
     public void setModel(OModel model) {
         mModel = model;
@@ -621,8 +610,12 @@ public class OSelectionField extends LinearLayout implements IOControlData,
             where = whr.toString();
             args = args_list.toArray(new String[args_list.size()]);
         }
-        List<ODataRow> rows = rel_model.select(new String[]{rel_model.getDefaultNameColumn()}, where,
-                args, rel_model.getDefaultNameColumn());
+        List<ODataRow> rows =
+                rel_model.select(
+                        new String[] {rel_model.getDefaultNameColumn()},
+                        where,
+                        args,
+                        rel_model.getDefaultNameColumn());
         ODataRow row = new ODataRow();
         row.put(OColumn.ROW_ID, -1);
         row.put(rel_model.getDefaultNameColumn(), "No " + column.getLabel() + " selected");

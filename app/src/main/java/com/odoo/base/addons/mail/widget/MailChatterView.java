@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 25/2/15 12:07 PM
+ * <p>Created on 25/2/15 12:07 PM
  */
 package com.odoo.base.addons.mail.widget;
 
@@ -37,13 +34,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.core.content.ContextCompat;
 import com.odoo.App;
 import com.odoo.R;
 import com.odoo.base.addons.mail.MailMessage;
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
+import com.odoo.core.rpc.helper.ODomain;
 import com.odoo.core.utils.BitmapUtils;
 import com.odoo.core.utils.IntentUtils;
 import com.odoo.core.utils.OControls;
@@ -51,15 +49,13 @@ import com.odoo.core.utils.OCursorUtils;
 import com.odoo.core.utils.ODateUtils;
 import com.odoo.core.utils.OResource;
 import com.odoo.core.utils.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import odoo.controls.ExpandableListControl;
-import com.odoo.core.rpc.helper.ODomain;
 
-public class MailChatterView extends LinearLayout implements
-        ExpandableListControl.ExpandableListAdapterGetViewListener, View.OnClickListener {
+public class MailChatterView extends LinearLayout
+        implements ExpandableListControl.ExpandableListAdapterGetViewListener,
+                View.OnClickListener {
     public static final String TAG = MailChatterView.class.getSimpleName();
     private Context mContext;
     private String modelName = null;
@@ -94,20 +90,24 @@ public class MailChatterView extends LinearLayout implements
         mContext = context;
         app = (App) mContext.getApplicationContext();
         if (attrs != null) {
-            TypedArray types = mContext.obtainStyledAttributes(attrs,
-                    R.styleable.MailChatterView);
+            TypedArray types = mContext.obtainStyledAttributes(attrs, R.styleable.MailChatterView);
             modelName = types.getString(R.styleable.MailChatterView_resModelName);
             types.recycle();
         }
         setOrientation(VERTICAL);
         mailMessage = new MailMessage(context, null);
-        mContext.registerReceiver(dataChangeReceiver, new IntentFilter("mail.message.update"));
+        ContextCompat.registerReceiver(
+                mContext,
+                dataChangeReceiver,
+                new IntentFilter("mail.message.update"),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void generateView() {
         Log.v(TAG, "Generating View for Mail Chatter");
         removeAllViews();
-        mChatterCardView = LayoutInflater.from(mContext).inflate(R.layout.base_mail_chatter, this, false);
+        mChatterCardView =
+                LayoutInflater.from(mContext).inflate(R.layout.base_mail_chatter, this, false);
         addView(mChatterCardView);
         findViewById(R.id.chatterSendMessage).setOnClickListener(this);
         findViewById(R.id.chatterLogInternalNote).setOnClickListener(this);
@@ -127,8 +127,8 @@ public class MailChatterView extends LinearLayout implements
 
     private void getMessages() {
         mChatterListView = (ExpandableListControl) findViewById(R.id.chatterMessages);
-        mListAdapter = mChatterListView.getAdapter(
-                R.layout.base_mail_chatter_item, chatterItems, this);
+        mListAdapter =
+                mChatterListView.getAdapter(R.layout.base_mail_chatter_item, chatterItems, this);
         mListAdapter.notifyDataSetChanged(chatterItems);
 
         // Check for server updated messages
@@ -144,12 +144,17 @@ public class MailChatterView extends LinearLayout implements
         // Getting local messages
         if (modelName != null) {
             chatterItems.clear();
-            Cursor cr = mContext.getContentResolver().query(mailMessage.uri(),
-                    null, "model = ? and res_id = ?",
-                    new String[]{modelName, record_server_id + ""}, "date desc");
+            Cursor cr =
+                    mContext.getContentResolver()
+                            .query(
+                                    mailMessage.uri(),
+                                    null,
+                                    "model = ? and res_id = ?",
+                                    new String[] {modelName, record_server_id + ""},
+                                    "date desc");
             if (cr.moveToFirst()) {
-                int limit = (loadAllMessages) ? cr.getCount()
-                        : (cr.getCount() > 3) ? 3 : cr.getCount();
+                int limit =
+                        (loadAllMessages) ? cr.getCount() : (cr.getCount() > 3) ? 3 : cr.getCount();
                 for (int i = 0; i < limit; i++) {
                     ODataRow row = OCursorUtils.toDatarow(cr);
                     chatterItems.add(row);
@@ -187,11 +192,8 @@ public class MailChatterView extends LinearLayout implements
         } else {
             view.setBackgroundColor(Color.WHITE);
         }
-        view.findViewById(R.id.imgAttachments).setVisibility(
-                (row.getBoolean("has_attachments")) ?
-                        View.VISIBLE :
-                        View.GONE
-        );
+        view.findViewById(R.id.imgAttachments)
+                .setVisibility((row.getBoolean("has_attachments")) ? View.VISIBLE : View.GONE);
 
         if (row.getString("subject").equals("false")) {
             OControls.setGone(view, R.id.chatterSubject);
@@ -199,8 +201,9 @@ public class MailChatterView extends LinearLayout implements
             OControls.setVisible(view, R.id.chatterSubject);
             OControls.setText(view, R.id.chatterSubject, row.getString("subject"));
         }
-        String date = ODateUtils.convertToDefault(row.getString("date"),
-                ODateUtils.DEFAULT_FORMAT, "MMM dd hh:mm a");
+        String date =
+                ODateUtils.convertToDefault(
+                        row.getString("date"), ODateUtils.DEFAULT_FORMAT, "MMM dd hh:mm a");
         OControls.setText(view, R.id.chatterDate, date);
         OControls.setText(view, R.id.chatterBody, StringUtils.htmlToString(row.getString("body")));
         OControls.setText(view, R.id.chatterAuthor, row.getString("author_name"));
@@ -222,44 +225,45 @@ public class MailChatterView extends LinearLayout implements
         Bundle extra = new Bundle();
         extra.putString("model", mModel.getModelName());
         extra.putInt("server_id", record_server_id);
-        switch (v.getId()) {
-            case R.id.chatterSendMessage:
-                if (app.inNetwork()) {
-                    extra.putString("type", MailChatterCompose.MessageType.Message.toString());
-                    IntentUtils.startActivity(mContext, MailChatterCompose.class, extra);
-                } else {
-                    Toast.makeText(mContext, OResource.string(mContext,
-                            R.string.toast_network_required), Toast.LENGTH_LONG).show();
-                }
-                break;
-            case R.id.chatterLogInternalNote:
-                if (app.inNetwork()) {
-                    extra.putString("type", MailChatterCompose.MessageType.InternalNote.toString());
-                    IntentUtils.startActivity(mContext, MailChatterCompose.class, extra);
-                } else {
-                    Toast.makeText(mContext, OResource.string(mContext,
-                            R.string.toast_network_required), Toast.LENGTH_LONG).show();
-                }
-                break;
-            case R.id.chatterLoadMoreMessages:
-                loadAllMessages = true;
-                updateChatterList();
-                break;
-            default:
-                ODataRow row = (ODataRow) v.getTag();
-                extra.putAll(row.getPrimaryBundleData());
-                if (row != null) {
-                    IntentUtils.startActivity(mContext, MailDetailDialog.class, extra);
-                }
-                break;
+        int id = v.getId();
+        if (id == R.id.chatterSendMessage) {
+            if (app.inNetwork()) {
+                extra.putString("type", MailChatterCompose.MessageType.Message.toString());
+                IntentUtils.startActivity(mContext, MailChatterCompose.class, extra);
+            } else {
+                Toast.makeText(
+                                mContext,
+                                OResource.string(mContext, R.string.toast_network_required),
+                                Toast.LENGTH_LONG)
+                        .show();
+            }
+        } else if (id == R.id.chatterLogInternalNote) {
+            if (app.inNetwork()) {
+                extra.putString("type", MailChatterCompose.MessageType.InternalNote.toString());
+                IntentUtils.startActivity(mContext, MailChatterCompose.class, extra);
+            } else {
+                Toast.makeText(
+                                mContext,
+                                OResource.string(mContext, R.string.toast_network_required),
+                                Toast.LENGTH_LONG)
+                        .show();
+            }
+        } else if (id == R.id.chatterLoadMoreMessages) {
+            loadAllMessages = true;
+            updateChatterList();
+        } else {
+            ODataRow row = (ODataRow) v.getTag();
+            extra.putAll(row.getPrimaryBundleData());
+            if (row != null) {
+                IntentUtils.startActivity(mContext, MailDetailDialog.class, extra);
+            }
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (messagesLoader != null)
-            messagesLoader.cancel(true);
+        if (messagesLoader != null) messagesLoader.cancel(true);
         mContext.unregisterReceiver(dataChangeReceiver);
     }
 
@@ -299,16 +303,16 @@ public class MailChatterView extends LinearLayout implements
         }
     }
 
-    private BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (!isExecuting) {
-                if (messagesLoader != null)
-                    messagesLoader.cancel(true);
-                messagesLoader = new ChatterMessagesLoader();
-                messagesLoader.execute();
-                isExecuting = true;
-            }
-        }
-    };
+    private BroadcastReceiver dataChangeReceiver =
+            new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (!isExecuting) {
+                        if (messagesLoader != null) messagesLoader.cancel(true);
+                        messagesLoader = new ChatterMessagesLoader();
+                        messagesLoader.execute();
+                        isExecuting = true;
+                    }
+                }
+            };
 }

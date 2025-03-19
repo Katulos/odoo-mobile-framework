@@ -10,11 +10,17 @@ public class OdooUserCurrency {
 
     @Override
     public String toString() {
-        return "OdooUserCurrency{" +
-                "id=" + id +
-                ", digits=" + Arrays.toString(digits) +
-                ", position='" + position + '\'' +
-                ", symbol='" + symbol + '\'' +
-                '}';
+        return "OdooUserCurrency{"
+                + "id="
+                + id
+                + ", digits="
+                + Arrays.toString(digits)
+                + ", position='"
+                + position
+                + '\''
+                + ", symbol='"
+                + symbol
+                + '\''
+                + '}';
     }
 }

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p>
- * Created on 17/12/14 6:21 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 17/12/14 6:21 PM
  */
 package com.odoo.core.auth;
 
@@ -27,7 +24,6 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.odoo.core.account.OdooLogin;
 import com.odoo.core.support.OUser;
 
@@ -43,7 +39,13 @@ public class OdooAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+    public Bundle addAccount(
+            AccountAuthenticatorResponse response,
+            String accountType,
+            String authTokenType,
+            String[] requiredFeatures,
+            Bundle options)
+            throws NetworkErrorException {
         final Bundle result;
         final Intent intent;
 
@@ -56,13 +58,13 @@ public class OdooAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle getAccountRemovalAllowed(AccountAuthenticatorResponse response, Account account) throws NetworkErrorException {
+    public Bundle getAccountRemovalAllowed(AccountAuthenticatorResponse response, Account account)
+            throws NetworkErrorException {
         Bundle result = super.getAccountRemovalAllowed(response, account);
         if (result != null
                 && result.containsKey(AccountManager.KEY_BOOLEAN_RESULT)
                 && !result.containsKey(AccountManager.KEY_INTENT)) {
-            final boolean removalAllowed = result
-                    .getBoolean(AccountManager.KEY_BOOLEAN_RESULT);
+            final boolean removalAllowed = result.getBoolean(AccountManager.KEY_BOOLEAN_RESULT);
             if (removalAllowed) {
                 OUser user = OdooAccountManager.getDetails(mContext, account.name);
                 OdooAccountManager.dropDatabase(user);
@@ -76,14 +78,20 @@ public class OdooAuthenticator extends AbstractAccountAuthenticator {
         return null;
     }
 
-
     @Override
-    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options) throws NetworkErrorException {
+    public Bundle confirmCredentials(
+            AccountAuthenticatorResponse response, Account account, Bundle options)
+            throws NetworkErrorException {
         return null;
     }
 
     @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
+    public Bundle getAuthToken(
+            AccountAuthenticatorResponse response,
+            Account account,
+            String authTokenType,
+            Bundle options)
+            throws NetworkErrorException {
         return null;
     }
 
@@ -93,12 +101,19 @@ public class OdooAuthenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
+    public Bundle updateCredentials(
+            AccountAuthenticatorResponse response,
+            Account account,
+            String authTokenType,
+            Bundle options)
+            throws NetworkErrorException {
         return null;
     }
 
     @Override
-    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
+    public Bundle hasFeatures(
+            AccountAuthenticatorResponse response, Account account, String[] features)
+            throws NetworkErrorException {
         return null;
     }
 }

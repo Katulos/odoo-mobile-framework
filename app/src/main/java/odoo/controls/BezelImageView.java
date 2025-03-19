@@ -28,19 +28,17 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewCompat;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.ImageView;
-
+import androidx.core.view.ViewCompat;
 import com.odoo.R;
 
 /**
- * An {@link android.widget.ImageView} that draws its contents inside a mask and
- * draws a border drawable on top. This is useful for applying a beveled look to
- * image contents, but is also flexible enough for use with other desired
- * aesthetics.
+ * An {@link android.widget.ImageView} that draws its contents inside a mask and draws a border
+ * drawable on top. This is useful for applying a beveled look to image contents, but is also
+ * flexible enough for use with other desired aesthetics.
  */
-public class BezelImageView extends ImageView {
+public class BezelImageView extends androidx.appcompat.widget.AppCompatImageView {
     private Paint mBlackPaint;
     private Paint mMaskedPaint;
 
@@ -71,31 +69,28 @@ public class BezelImageView extends ImageView {
         super(context, attrs, defStyle);
         mContext = context;
         // Attribute initialization
-        final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.BezelImageView, defStyle, 0);
+        final TypedArray a =
+                context.obtainStyledAttributes(attrs, R.styleable.BezelImageView, defStyle, 0);
 
         mMaskDrawable = a.getDrawable(R.styleable.BezelImageView_maskDrawable);
         if (mMaskDrawable != null) {
             mMaskDrawable.setCallback(this);
         }
 
-        mBorderDrawable = a
-                .getDrawable(R.styleable.BezelImageView_borderDrawable);
+        mBorderDrawable = a.getDrawable(R.styleable.BezelImageView_borderDrawable);
         if (mBorderDrawable != null) {
             mBorderDrawable.setCallback(this);
         }
 
-        mDesaturateOnPress = a.getBoolean(
-                R.styleable.BezelImageView_desaturateOnPress,
-                mDesaturateOnPress);
+        mDesaturateOnPress =
+                a.getBoolean(R.styleable.BezelImageView_desaturateOnPress, mDesaturateOnPress);
 
         a.recycle();
         otherInit();
     }
 
     public void autoSetMaskDrawable() {
-        mMaskDrawable = mContext.getResources().getDrawable(
-                R.drawable.circle_mask);
+        mMaskDrawable = mContext.getResources().getDrawable(R.drawable.circle_mask);
         otherInit();
     }
 
@@ -105,8 +100,7 @@ public class BezelImageView extends ImageView {
         mBlackPaint.setColor(0xff000000);
 
         mMaskedPaint = new Paint();
-        mMaskedPaint
-                .setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        mMaskedPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         // Always want a cache allocated.
         mCacheBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
@@ -162,8 +156,7 @@ public class BezelImageView extends ImageView {
                 // Allocate a new bitmap with the correct dimensions.
                 mCacheBitmap.recycle();
                 // noinspection AndroidLintDrawAllocation
-                mCacheBitmap = Bitmap.createBitmap(width, height,
-                        Bitmap.Config.ARGB_8888);
+                mCacheBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 mCachedWidth = width;
                 mCachedHeight = height;
             }
@@ -172,22 +165,27 @@ public class BezelImageView extends ImageView {
             if (mMaskDrawable != null) {
                 int sc = cacheCanvas.save();
                 mMaskDrawable.draw(cacheCanvas);
-                mMaskedPaint
-                        .setColorFilter((mDesaturateOnPress && isPressed()) ? mDesaturateColorFilter
-                                : null);
-                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
-                        Canvas.HAS_ALPHA_LAYER_SAVE_FLAG
-                                | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
+                mMaskedPaint.setColorFilter(
+                        (mDesaturateOnPress && isPressed()) ? mDesaturateColorFilter : null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    cacheCanvas.saveLayer(mBoundsF, mMaskedPaint);
+                } else {
+                    cacheCanvas.saveLayer(mBoundsF, mMaskedPaint, Canvas.ALL_SAVE_FLAG);
+                }
+                //                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
+                //                        Canvas.HAS_ALPHA_LAYER_SAVE_FLAG
+                //                                | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
                 super.onDraw(cacheCanvas);
                 cacheCanvas.restoreToCount(sc);
             } else if (mDesaturateOnPress && isPressed()) {
                 int sc = cacheCanvas.save();
-                cacheCanvas.drawRect(0, 0, mCachedWidth, mCachedHeight,
-                        mBlackPaint);
+                cacheCanvas.drawRect(0, 0, mCachedWidth, mCachedHeight, mBlackPaint);
                 mMaskedPaint.setColorFilter(mDesaturateColorFilter);
-                cacheCanvas.saveLayer(mBoundsF, mMaskedPaint,
-                        Canvas.HAS_ALPHA_LAYER_SAVE_FLAG
-                                | Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    cacheCanvas.saveLayer(mBoundsF, mMaskedPaint);
+                } else {
+                    cacheCanvas.saveLayer(mBoundsF, mMaskedPaint, Canvas.ALL_SAVE_FLAG);
+                }
                 super.onDraw(cacheCanvas);
                 cacheCanvas.restoreToCount(sc);
             } else {
@@ -228,7 +226,6 @@ public class BezelImageView extends ImageView {
 
     @Override
     protected boolean verifyDrawable(Drawable who) {
-        return who == mBorderDrawable || who == mMaskDrawable
-                || super.verifyDrawable(who);
+        return who == mBorderDrawable || who == mMaskDrawable || super.verifyDrawable(who);
     }
 }

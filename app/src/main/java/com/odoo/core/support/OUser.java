@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 17/12/14 6:19 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 17/12/14 6:19 PM
  */
 package com.odoo.core.support;
 
@@ -24,9 +21,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.odoo.core.auth.OdooAccountManager;
-
 import com.odoo.core.rpc.helper.OdooVersion;
 import com.odoo.core.rpc.helper.utils.OBundleUtils;
 
@@ -186,28 +181,17 @@ public class OUser {
     }
 
     public void fillFromBundle(Bundle data) {
-        if (OBundleUtils.hasKey(data, "username"))
-            setUsername(data.getString("username"));
-        if (OBundleUtils.hasKey(data, "name"))
-            setName(data.getString("name"));
-        if (OBundleUtils.hasKey(data, "timezone"))
-            setTimezone(data.getString("timezone"));
-        if (OBundleUtils.hasKey(data, "avatar"))
-            setAvatar(data.getString("avatar"));
-        if (OBundleUtils.hasKey(data, "database"))
-            setDatabase(data.getString("database"));
-        if (OBundleUtils.hasKey(data, "host"))
-            setHost(data.getString("host"));
-        if (OBundleUtils.hasKey(data, "password"))
-            setPassword(data.getString("password"));
-        if (OBundleUtils.hasKey(data, "user_id"))
-            setUserId(data.getInt("user_id"));
-        if (OBundleUtils.hasKey(data, "partner_id"))
-            setPartnerId(data.getInt("partner_id"));
-        if (OBundleUtils.hasKey(data, "company_id"))
-            setCompanyId(data.getInt("company_id"));
-        if (OBundleUtils.hasKey(data, "is_active"))
-            setIsActive(data.getBoolean("is_active"));
+        if (OBundleUtils.hasKey(data, "username")) setUsername(data.getString("username"));
+        if (OBundleUtils.hasKey(data, "name")) setName(data.getString("name"));
+        if (OBundleUtils.hasKey(data, "timezone")) setTimezone(data.getString("timezone"));
+        if (OBundleUtils.hasKey(data, "avatar")) setAvatar(data.getString("avatar"));
+        if (OBundleUtils.hasKey(data, "database")) setDatabase(data.getString("database"));
+        if (OBundleUtils.hasKey(data, "host")) setHost(data.getString("host"));
+        if (OBundleUtils.hasKey(data, "password")) setPassword(data.getString("password"));
+        if (OBundleUtils.hasKey(data, "user_id")) setUserId(data.getInt("user_id"));
+        if (OBundleUtils.hasKey(data, "partner_id")) setPartnerId(data.getInt("partner_id"));
+        if (OBundleUtils.hasKey(data, "company_id")) setCompanyId(data.getInt("company_id"));
+        if (OBundleUtils.hasKey(data, "is_active")) setIsActive(data.getBoolean("is_active"));
         if (OBundleUtils.hasKey(data, "allow_force_connect"))
             setAllowForceConnect(data.getBoolean("allow_force_connect"));
         odooVersion = new OdooVersion();
@@ -231,14 +215,17 @@ public class OUser {
         setHost(accMgr.getUserData(account, "host"));
         setPassword(accMgr.getUserData(account, "password"));
         setCompanyId(Integer.parseInt(accMgr.getUserData(account, "company_id")));
-        setAllowForceConnect(Boolean.parseBoolean(accMgr.getUserData(account, "allow_self_signed_ssl")));
+        setAllowForceConnect(
+                Boolean.parseBoolean(accMgr.getUserData(account, "allow_self_signed_ssl")));
         try {
             OdooVersion version = new OdooVersion();
             version.setServerSerie(accMgr.getUserData(account, "server_serie"));
             version.setVersionType(accMgr.getUserData(account, "version_type"));
             version.setVersionRelease(accMgr.getUserData(account, "version_release"));
-            version.setVersionNumber(Integer.parseInt(accMgr.getUserData(account, "version_number")));
-            version.setVersionTypeNumber(Integer.parseInt(accMgr.getUserData(account, "version_type_number")));
+            version.setVersionNumber(
+                    Integer.parseInt(accMgr.getUserData(account, "version_number")));
+            version.setVersionTypeNumber(
+                    Integer.parseInt(accMgr.getUserData(account, "version_type_number")));
             version.setServerVersion(accMgr.getUserData(account, "server_version"));
             setOdooVersion(version);
         } catch (Exception e) {
@@ -258,5 +245,4 @@ public class OUser {
     public String toString() {
         return getAndroidName();
     }
-
 }

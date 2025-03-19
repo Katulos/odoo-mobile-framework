@@ -1,14 +1,12 @@
 package com.odoo.widgets.slider;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import com.odoo.widget.slider.navigator.PagerNavigatorAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,26 +42,23 @@ public class SliderHelper extends ViewPager {
 
         setOnPageChangeListener(mPageChangeListener);
 
-        setPageTransformer(true, new ZoomOutPageTransformer() );
+        setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
-    OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
+    OnPageChangeListener mPageChangeListener =
+            new OnPageChangeListener() {
 
-        @Override
-        public void onPageSelected(int position) {
-            mPagerNavigatorAdapter.focusOnPagerDot(position);
-        }
+                @Override
+                public void onPageSelected(int position) {
+                    mPagerNavigatorAdapter.focusOnPagerDot(position);
+                }
 
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {}
 
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
+                @Override
+                public void onPageScrollStateChanged(int arg0) {}
+            };
 
     public void initNavigator(ViewGroup parent) {
         mPagerNavigatorAdapter.navigator(mPagerAdapter.getCount(), parent);
@@ -97,9 +92,8 @@ public class SliderHelper extends ViewPager {
                 view.setScaleY(scaleFactor);
 
                 // Fade the page relative to its size.
-                view.setAlpha(MIN_ALPHA +
-                        (scaleFactor - MIN_SCALE) /
-                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+                view.setAlpha(
+                        MIN_ALPHA + (scaleFactor - MIN_SCALE) / (1 - MIN_SCALE) * (1 - MIN_ALPHA));
 
             } else { // (1,+Infinity]
                 // This page is way off-screen to the right.

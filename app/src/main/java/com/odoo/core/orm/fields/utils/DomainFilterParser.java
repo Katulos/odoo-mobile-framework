@@ -1,16 +1,13 @@
 package com.odoo.core.orm.fields.utils;
 
 import android.os.Bundle;
-
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.rpc.helper.ODomain;
-
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.json.JSONArray;
 
 public class DomainFilterParser {
 
@@ -85,10 +82,12 @@ public class DomainFilterParser {
         }
         for (FilterDomain domain : filterColumnValues.values()) {
             if (domain.operator_value != null)
-                domains.put("condition_operator_#" + i++,
+                domains.put(
+                        "condition_operator_#" + i++,
                         new OColumn.ColumnDomain(domain.operator_value));
             else
-                domains.put(domain.baseColumn,
+                domains.put(
+                        domain.baseColumn,
                         new OColumn.ColumnDomain(domain.baseColumn, domain.operator, domain.value));
         }
         return domains;
@@ -177,9 +176,9 @@ public class DomainFilterParser {
 
         @Override
         public String toString() {
-            if (operator_value != null)
-                return operator_value;
-            return String.format("['%s', '%s', @%s=%s]",
+            if (operator_value != null) return operator_value;
+            return String.format(
+                    "['%s', '%s', @%s=%s]",
                     baseColumn, operator, valueColumn != null ? valueColumn : "value", value + "");
         }
     }

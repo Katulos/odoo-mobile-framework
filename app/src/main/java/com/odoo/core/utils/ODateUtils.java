@@ -1,26 +1,22 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 31/12/14 11:36 AM
+ * <p>Created on 31/12/14 11:36 AM
  */
 package com.odoo.core.utils;
 
 import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,11 +25,10 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class ODateUtils {
-    public final static String TAG = ODateUtils.class.getSimpleName();
+    public static final String TAG = ODateUtils.class.getSimpleName();
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
-
 
     /**
      * Return Current date string in "yyyy-MM-dd HH:mm:ss" format
@@ -57,7 +52,7 @@ public class ODateUtils {
     /**
      * Returns current date string in given format
      *
-     * @param date,          date object
+     * @param date, date object
      * @param defaultFormat, date format
      * @return current date string (default timezone)
      */
@@ -87,7 +82,7 @@ public class ODateUtils {
     /**
      * Returns UTC Date string in given date format
      *
-     * @param date,          Date object
+     * @param date, Date object
      * @param defaultFormat, Date pattern format
      * @return UTC date string
      */
@@ -95,11 +90,10 @@ public class ODateUtils {
         return createDate(date, defaultFormat, true);
     }
 
-
     /**
      * Convert UTC date to default timezone date
      *
-     * @param date       date in string
+     * @param date date in string
      * @param dateFormat default date format
      * @return string converted date string
      */
@@ -110,9 +104,9 @@ public class ODateUtils {
     /**
      * Convert UTC date to default timezone
      *
-     * @param date       UTC date string
+     * @param date UTC date string
      * @param dateFormat default date format
-     * @param toFormat   converting date format
+     * @param toFormat converting date format
      * @return string converted date string
      */
     public static String convertToDefault(String date, String dateFormat, String toFormat) {
@@ -122,7 +116,7 @@ public class ODateUtils {
     /**
      * Convert to UTC date
      *
-     * @param date       date in string
+     * @param date date in string
      * @param dateFormat default date format
      * @return string date string in UTC timezone
      */
@@ -133,9 +127,9 @@ public class ODateUtils {
     /**
      * Convert default timezone date to UTC timezone
      *
-     * @param date,      date in string
+     * @param date, date in string
      * @param dateFormat default date format
-     * @param toFormat   display format
+     * @param toFormat display format
      * @return string, returns string converted to UTC
      */
     public static String convertToUTC(String date, String dateFormat, String toFormat) {
@@ -149,12 +143,13 @@ public class ODateUtils {
     /**
      * Create Date instance from given date string.
      *
-     * @param date               date in string
-     * @param dateFormat,        original date format
+     * @param date date in string
+     * @param dateFormat, original date format
      * @param hasDefaultTimezone if date is in default timezone than true, otherwise false
      * @return Date, returns Date object with given date
      */
-    public static Date createDateObject(String date, String dateFormat, Boolean hasDefaultTimezone) {
+    public static Date createDateObject(
+            String date, String dateFormat, Boolean hasDefaultTimezone) {
         Date dateObj = null;
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
@@ -261,8 +256,8 @@ public class ODateUtils {
 
     public static String durationToFloat(long milliseconds) {
         long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-                TimeUnit.MINUTES.toSeconds(minute);
+        long seconds =
+                TimeUnit.MILLISECONDS.toSeconds(milliseconds) - TimeUnit.MINUTES.toSeconds(minute);
         if (seconds == 60) {
             minute = minute + 1;
             seconds = 0;

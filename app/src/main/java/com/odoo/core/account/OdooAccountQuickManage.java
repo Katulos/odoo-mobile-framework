@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 16/2/15 12:52 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 16/2/15 12:52 PM
  */
 package com.odoo.core.account;
 
@@ -27,14 +24,13 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.odoo.App;
 import com.odoo.OdooActivity;
 import com.odoo.R;
@@ -59,7 +55,9 @@ public class OdooAccountQuickManage extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_account_quick_manage);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow()
+                .setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getSupportActionBar().hide();
         action = getIntent().getAction();
         mApp = (App) getApplicationContext();
@@ -89,50 +87,61 @@ public class OdooAccountQuickManage extends AppCompatActivity implements View.On
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.title_confirm);
         builder.setMessage(R.string.toast_are_you_sure_delete_account);
-        builder.setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (OdooAccountManager.removeAccount(
-                        OdooAccountQuickManage.this, user.getAndroidName())) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent loginActivity = new Intent(OdooAccountQuickManage.this,
-                                    OdooLogin.class);
-                            loginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(loginActivity);
-                            finish();
+        builder.setPositiveButton(
+                R.string.label_delete,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (OdooAccountManager.removeAccount(
+                                OdooAccountQuickManage.this, user.getAndroidName())) {
+                            new Handler()
+                                    .postDelayed(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Intent loginActivity =
+                                                            new Intent(
+                                                                    OdooAccountQuickManage.this,
+                                                                    OdooLogin.class);
+                                                    loginActivity.setFlags(
+                                                            Intent.FLAG_ACTIVITY_NEW_TASK
+                                                                    | Intent
+                                                                            .FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(loginActivity);
+                                                    finish();
+                                                }
+                                            },
+                                            500);
                         }
-                    }, 500);
-                }
-            }
-        });
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        builder.setNegativeButton(R.string.label_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
+                    }
+                });
+        builder.setOnCancelListener(
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        builder.setNegativeButton(
+                R.string.label_cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
         builder.show();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cancel:
-                finish();
-                break;
-            case R.id.save_password:
-                savePassword();
-                break;
+        int id = v.getId();
+        if (id == R.id.cancel) {
+            finish();
+        } else if (id == R.id.save_password) {
+            savePassword();
         }
     }
 
@@ -157,8 +166,9 @@ public class OdooAccountQuickManage extends AppCompatActivity implements View.On
             super.onPreExecute();
             progressDialog = new ProgressDialog(OdooAccountQuickManage.this);
             progressDialog.setTitle(R.string.title_working);
-            progressDialog.setMessage(OResource.string(OdooAccountQuickManage.this,
-                    R.string.toast_updating_password));
+            progressDialog.setMessage(
+                    OResource.string(
+                            OdooAccountQuickManage.this, R.string.toast_updating_password));
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -167,8 +177,9 @@ public class OdooAccountQuickManage extends AppCompatActivity implements View.On
         protected OUser doInBackground(String... params) {
             Odoo odoo = mApp.getOdoo(user);
             if (odoo == null) {
-                odoo = OSyncAdapter.createOdooInstance(OdooAccountQuickManage.this,
-                        (com.odoo.core.support.OUser) user);
+                odoo =
+                        OSyncAdapter.createOdooInstance(
+                                OdooAccountQuickManage.this, (com.odoo.core.support.OUser) user);
             }
             return odoo.authenticate(user.getUsername(), user.getPassword(), user.getDatabase());
         }
@@ -178,8 +189,8 @@ public class OdooAccountQuickManage extends AppCompatActivity implements View.On
             super.onPostExecute(oUser);
             progressDialog.dismiss();
             if (oUser != null) {
-                OdooAccountManager.updateUserData(OdooAccountQuickManage.this,
-                        (com.odoo.core.support.OUser) user);
+                OdooAccountManager.updateUserData(
+                        OdooAccountQuickManage.this, (com.odoo.core.support.OUser) user);
                 mApp.setOdoo(null, user);
                 finish();
                 Intent intent = new Intent(OdooAccountQuickManage.this, OdooActivity.class);

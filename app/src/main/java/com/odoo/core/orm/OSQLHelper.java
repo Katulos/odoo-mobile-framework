@@ -1,31 +1,26 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 31/12/14 3:11 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 31/12/14 3:11 PM
  */
 package com.odoo.core.orm;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.types.OInteger;
 import com.odoo.core.orm.fields.types.OTypeHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +105,6 @@ public class OSQLHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void manyToManyTable(OColumn column, OModel model) {
@@ -118,8 +112,10 @@ public class OSQLHelper {
         try {
             OModel relation_model = model.createInstance(column.getType());
             List<OColumn> m2mCols = model.getManyToManyColumns(column, relation_model);
-            String table_name = column.getRelTableName() != null ? column.getRelTableName() :
-                    model.getTableName() + "_" + relation_model.getTableName() + "_rel";
+            String table_name =
+                    column.getRelTableName() != null
+                            ? column.getRelTableName()
+                            : model.getTableName() + "_" + relation_model.getTableName() + "_rel";
             if (!mModels.contains(table_name)) {
                 sql = new StringBuffer();
                 mModels.add(table_name);
@@ -175,8 +171,8 @@ public class OSQLHelper {
                         switch (col.getRelationType()) {
                             case ManyToMany:
                                 OModel rel = model.createInstance(col.getType());
-                                String table_name = model.getTableName() + "_"
-                                        + rel.getTableName() + "_rel";
+                                String table_name =
+                                        model.getTableName() + "_" + rel.getTableName() + "_rel";
                                 sql = new StringBuffer();
                                 sql.append("DROP TABLE IF EXISTS ");
                                 sql.append(table_name);
@@ -186,8 +182,7 @@ public class OSQLHelper {
                                 break;
                             case ManyToOne:
                             case OneToMany:
-                                createDropStatements(model.createInstance(col
-                                        .getType()));
+                                createDropStatements(model.createInstance(col.getType()));
                                 break;
                         }
                     }

@@ -1,32 +1,28 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 30/12/14 5:44 PM
+ * <p>Created on 30/12/14 5:44 PM
  */
 package com.odoo.core.utils;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.odoo.R;
 
 public class OFragmentUtils {
@@ -49,10 +45,8 @@ public class OFragmentUtils {
 
     public void startFragment(Fragment fragment, boolean addToBackState, Bundle extra) {
         Bundle extra_data = fragment.getArguments();
-        if (extra_data == null)
-            extra_data = new Bundle();
-        if (extra != null)
-            extra_data.putAll(extra);
+        if (extra_data == null) extra_data = new Bundle();
+        if (extra != null) extra_data.putAll(extra);
         fragment.setArguments(extra_data);
         loadFragment(fragment, addToBackState);
     }
@@ -65,12 +59,12 @@ public class OFragmentUtils {
         }
         if (savedInstance == null) {
             Log.i(TAG, "Fragment Loaded (" + tag + ")");
-            FragmentTransaction tran = fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment, tag);
-            if (addToBackState)
-                tran.addToBackStack(tag);
+            FragmentTransaction tran =
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment, tag);
+            if (addToBackState) tran.addToBackStack(tag);
             tran.commitAllowingStateLoss();
         }
     }
-
 }

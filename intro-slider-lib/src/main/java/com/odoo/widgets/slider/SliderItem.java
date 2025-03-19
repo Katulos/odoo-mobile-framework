@@ -1,7 +1,6 @@
 package com.odoo.widgets.slider;
 
 import com.odoo.widgets.slider.SliderPagerAdapter.SliderBuilderListener;
-
 import java.util.HashMap;
 
 public class SliderItem {
@@ -12,8 +11,7 @@ public class SliderItem {
     private SliderBuilderListener mSliderBuilderListener = null;
     private HashMap<String, Object> extras = new HashMap<>();
 
-    public SliderItem(String title, String content, int image,
-                      SliderBuilderListener listener) {
+    public SliderItem(String title, String content, int image, SliderBuilderListener listener) {
         super();
         this.content = content;
         this.title = title;

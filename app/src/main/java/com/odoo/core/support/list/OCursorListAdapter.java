@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 8/1/15 12:44 PM
+ * <p>Created on 8/1/15 12:44 PM
  */
 package com.odoo.core.support.list;
 
@@ -29,19 +26,16 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.SectionIndexer;
-
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.utils.logger.OLog;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
 import odoo.controls.OForm;
 
-public class OCursorListAdapter extends CursorAdapter implements
-        AdapterView.OnItemClickListener, SectionIndexer {
+public class OCursorListAdapter extends CursorAdapter
+        implements AdapterView.OnItemClickListener, SectionIndexer {
     public static final String TAG = OCursorListAdapter.class.getSimpleName();
 
     private Integer mLayout = null;
@@ -108,31 +102,37 @@ public class OCursorListAdapter extends CursorAdapter implements
         view = newView(mContext, cursor, (ViewGroup) view);
         final View mView = view;
         for (final int id : mViewClickListeners.keySet()) {
-            new Handler().postDelayed(new Runnable() {
+            new Handler()
+                    .postDelayed(
+                            new Runnable() {
 
-                @Override
-                public void run() {
-                    if (mView.findViewById(id) != null) {
-                        mView.findViewById(id).setOnClickListener(
-                                new View.OnClickListener() {
+                                @Override
+                                public void run() {
+                                    if (mView.findViewById(id) != null) {
+                                        mView.findViewById(id)
+                                                .setOnClickListener(
+                                                        new View.OnClickListener() {
 
-                                    @Override
-                                    public void onClick(View v) {
-                                        OnRowViewClickListener listener = mViewClickListeners
-                                                .get(id);
-                                        Cursor c = getCursor();
-                                        c.moveToPosition(position);
-                                        listener.onRowViewClick(position, c, v,
-                                                mView);
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                OnRowViewClickListener listener =
+                                                                        mViewClickListeners.get(id);
+                                                                Cursor c = getCursor();
+                                                                c.moveToPosition(position);
+                                                                listener.onRowViewClick(
+                                                                        position, c, v, mView);
+                                                            }
+                                                        });
+                                    } else {
+                                        OLog.log(
+                                                "View @id/"
+                                                        + mContext.getResources()
+                                                                .getResourceEntryName(id)
+                                                        + " not found");
                                     }
-                                });
-                    } else {
-                        OLog.log("View @id/"
-                                + mContext.getResources().getResourceEntryName(
-                                id) + " not found");
-                    }
-                }
-            }, 100);
+                                }
+                            },
+                            100);
         }
         return super.getView(position, view, viewGroup);
     }
@@ -168,13 +168,13 @@ public class OCursorListAdapter extends CursorAdapter implements
             }
         }
         if (mOnViewCreateListener != null) {
-            view = mOnViewCreateListener.onViewCreated(context, viewGroup,
-                    cursor, cursor.getPosition());
+            view =
+                    mOnViewCreateListener.onViewCreated(
+                            context, viewGroup, cursor, cursor.getPosition());
             if (view == null) {
                 view = mInflater.inflate(mLayout, viewGroup, false);
             }
-        } else
-            view = mInflater.inflate(mLayout, viewGroup, false);
+        } else view = mInflater.inflate(mLayout, viewGroup, false);
         if (mCacheViews) {
             mViewCache.put("view_" + cursor.getPosition(), view);
         }
@@ -214,8 +214,7 @@ public class OCursorListAdapter extends CursorAdapter implements
         return mLayout;
     }
 
-    public void setOnRowViewClickListener(int view_id,
-                                          OnRowViewClickListener listener) {
+    public void setOnRowViewClickListener(int view_id, OnRowViewClickListener listener) {
         mViewClickListeners.put(view_id, listener);
     }
 
@@ -232,8 +231,7 @@ public class OCursorListAdapter extends CursorAdapter implements
     }
 
     public interface OnRowViewClickListener {
-        public void onRowViewClick(int position, Cursor cursor, View view,
-                                   View parent);
+        public void onRowViewClick(int position, Cursor cursor, View view, View parent);
     }
 
     public interface OnViewBindListener {
@@ -245,8 +243,7 @@ public class OCursorListAdapter extends CursorAdapter implements
     }
 
     public interface OnViewCreateListener {
-        public View onViewCreated(Context context, ViewGroup view, Cursor cr,
-                                  int position);
+        public View onViewCreated(Context context, ViewGroup view, Cursor cr, int position);
     }
 
     public void handleItemClickListener(AbsListView absListView, IOnItemClickListener listener) {
@@ -269,16 +266,19 @@ public class OCursorListAdapter extends CursorAdapter implements
             mDoubleClick = true;
             mDoubleClickItemIndex = position;
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mDoubleClick) {
-                    mDoubleClick = false;
-                    mDoubleClickItemIndex = -1;
-                    mIOnItemClickListener.onItemClick(view, position);
-                }
-            }
-        }, 500);
+        new Handler()
+                .postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mDoubleClick) {
+                                    mDoubleClick = false;
+                                    mDoubleClickItemIndex = -1;
+                                    mIOnItemClickListener.onItemClick(view, position);
+                                }
+                            }
+                        },
+                        500);
     }
 
     public void setHasSectionIndexers(boolean hasSectionIndexers, String onColumn) {
@@ -301,5 +301,4 @@ public class OCursorListAdapter extends CursorAdapter implements
     public int getSectionForPosition(int position) {
         return azIndexers.get(sections[position]);
     }
-
 }

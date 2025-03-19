@@ -1,31 +1,26 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 31/12/14 6:49 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 31/12/14 6:49 PM
  */
 package com.odoo.core.orm;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.utils.DomainFilterParser;
 import com.odoo.core.utils.OObjectUtils;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,8 +86,7 @@ public class OValues implements Serializable {
     }
 
     public void setAll(OValues values) {
-        for (String key : values.keys())
-            _values.put(key, values.get(key));
+        for (String key : values.keys()) _values.put(key, values.get(key));
     }
 
     public int size() {
@@ -155,8 +149,7 @@ public class OValues implements Serializable {
         if (column.hasDomainFilterColumn()) {
             DomainFilterParser parser = column.getDomainFilterParser(model);
             for (String key : parser.getFilterColumns()) {
-                if (!key.startsWith("operator#") &&
-                        !key.startsWith("value#")) {
+                if (!key.startsWith("operator#") && !key.startsWith("value#")) {
                     String[] keyParts = key.split("#");
                     Object val = get(keyParts[1]);
                     if (val instanceof Integer) {

@@ -1,23 +1,23 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 16/1/15 3:36 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 16/1/15 3:36 PM
  */
 package com.odoo.base.addons.ir.feature;
+
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -40,7 +40,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
-
 import com.odoo.App;
 import com.odoo.R;
 import com.odoo.base.addons.ir.IrAttachment;
@@ -54,16 +53,12 @@ import com.odoo.core.utils.OAlert;
 import com.odoo.core.utils.OResource;
 import com.odoo.core.utils.OStorageUtils;
 import com.odoo.core.utils.notification.ONotificationBuilder;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.FileNameMap;
 import java.net.URLConnection;
-
-import static android.widget.Toast.LENGTH_SHORT;
-import static android.widget.Toast.makeText;
 
 public class OFileManager implements DialogInterface.OnClickListener {
     public static final String TAG = OFileManager.class.getSimpleName();
@@ -105,25 +100,32 @@ public class OFileManager implements DialogInterface.OnClickListener {
         if (devicePermissionHelper.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             _downloadAttachment(attachment_id);
         } else {
-            devicePermissionHelper.requestToGrantPermission(new DevicePermissionHelper
-                    .PermissionGrantListener() {
-                @Override
-                public void onPermissionGranted() {
-                    _downloadAttachment(attachment_id);
-                }
+            devicePermissionHelper.requestToGrantPermission(
+                    new DevicePermissionHelper.PermissionGrantListener() {
+                        @Override
+                        public void onPermissionGranted() {
+                            _downloadAttachment(attachment_id);
+                        }
 
-                @Override
-                public void onPermissionDenied() {
-                    Toast.makeText(mActivity, R.string.toast_permission_download_storage,
-                            Toast.LENGTH_LONG).show();
-                }
+                        @Override
+                        public void onPermissionDenied() {
+                            Toast.makeText(
+                                            mActivity,
+                                            R.string.toast_permission_download_storage,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
 
-                @Override
-                public void onPermissionRationale() {
-                    Toast.makeText(mActivity, R.string.toast_permission_download_storage_help,
-                            Toast.LENGTH_LONG).show();
-                }
-            }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        @Override
+                        public void onPermissionRationale() {
+                            Toast.makeText(
+                                            mActivity,
+                                            R.string.toast_permission_download_storage_help,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    },
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
     }
 
@@ -160,10 +162,9 @@ public class OFileManager implements DialogInterface.OnClickListener {
         }
     }
 
-
     private void _download(ODataRow attachment) {
-        ONotificationBuilder builder = new ONotificationBuilder(mActivity,
-                attachment.getInt(OColumn.ROW_ID));
+        ONotificationBuilder builder =
+                new ONotificationBuilder(mActivity, attachment.getInt(OColumn.ROW_ID));
         builder.setTitle("Downloading " + attachment.getString("name"));
         builder.setText("Download in progress");
         builder.setOngoing(true);
@@ -195,11 +196,14 @@ public class OFileManager implements DialogInterface.OnClickListener {
                 try {
                     Thread.sleep(500);
                     ODataRow attachment = params[0];
-                    String base64 = irAttachment.getDatasFromServer(attachment.getInt(OColumn.ROW_ID));
+                    String base64 =
+                            irAttachment.getDatasFromServer(attachment.getInt(OColumn.ROW_ID));
                     if (!base64.equals("false")) {
-                        String file = createFile(attachment.getString("name"),
-                                Base64.decode(base64, 0)
-                                , attachment.getString("file_type"));
+                        String file =
+                                createFile(
+                                        attachment.getString("name"),
+                                        Base64.decode(base64, 0),
+                                        attachment.getString("file_type"));
                         Uri uri = Uri.fromFile(new File(file));
                         OValues values = new OValues();
                         values.put("file_uri", uri.toString());
@@ -218,8 +222,8 @@ public class OFileManager implements DialogInterface.OnClickListener {
             super.onPostExecute(row);
             if (row != null) {
                 ONotificationBuilder.cancelNotification(mActivity, row.getInt(OColumn.ROW_ID));
-                ONotificationBuilder builder = new ONotificationBuilder(mActivity,
-                        row.getInt(OColumn.ROW_ID));
+                ONotificationBuilder builder =
+                        new ONotificationBuilder(mActivity, row.getInt(OColumn.ROW_ID));
                 builder.allowVibrate(true);
                 builder.withRingTone(true);
                 builder.setTitle(row.getString("name"));
@@ -230,7 +234,8 @@ public class OFileManager implements DialogInterface.OnClickListener {
                     builder.setBigPicture(bmp);
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(row.getString("file_uri")), row.getString("file_type"));
+                intent.setDataAndType(
+                        Uri.parse(row.getString("file_uri")), row.getString("file_type"));
                 builder.setResultIntent(intent);
                 builder.build().show();
             } else {
@@ -267,11 +272,14 @@ public class OFileManager implements DialogInterface.OnClickListener {
         try {
             mActivity.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(mActivity, OResource.string(mActivity, R.string.toast_no_activity_found_to_handle_file),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                            mActivity,
+                            OResource.string(
+                                    mActivity, R.string.toast_no_activity_found_to_handle_file),
+                            Toast.LENGTH_LONG)
+                    .show();
         }
     }
-
 
     private boolean fileExists(Uri uri) {
         return new File(uri.getPath()).exists();
@@ -281,11 +289,16 @@ public class OFileManager implements DialogInterface.OnClickListener {
         Bitmap bitmap;
         if (!fileExists(uri) && atLeastKitKat()) {
             String path = getDocPath(uri);
-            bitmap = BitmapUtils.getBitmapImage(mActivity,
-                    BitmapUtils.uriToBase64(Uri.fromFile(new File(path)), mActivity.getContentResolver()));
+            bitmap =
+                    BitmapUtils.getBitmapImage(
+                            mActivity,
+                            BitmapUtils.uriToBase64(
+                                    Uri.fromFile(new File(path)), mActivity.getContentResolver()));
         } else {
-            bitmap = BitmapUtils.getBitmapImage(mActivity,
-                    BitmapUtils.uriToBase64(uri, mActivity.getContentResolver()));
+            bitmap =
+                    BitmapUtils.getBitmapImage(
+                            mActivity,
+                            BitmapUtils.uriToBase64(uri, mActivity.getContentResolver()));
         }
         return bitmap;
     }
@@ -296,9 +309,15 @@ public class OFileManager implements DialogInterface.OnClickListener {
         String id = wholeID.split(":")[1];
         String[] column = {MediaStore.Images.Media.DATA};
         String sel = MediaStore.Images.Media._ID + "=?";
-        Cursor cursor = mActivity.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel,
-                new String[]{id}, null);
+        Cursor cursor =
+                mActivity
+                        .getContentResolver()
+                        .query(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                column,
+                                sel,
+                                new String[] {id},
+                                null);
         String filePath = null;
         int columnIndex = cursor.getColumnIndex(column[0]);
         if (cursor.moveToFirst()) {
@@ -318,25 +337,34 @@ public class OFileManager implements DialogInterface.OnClickListener {
             _requestForFile(type);
         } else {
             Log.w(TAG, "No permission for CAMERA or WRITE_EXTERNAL_STORAGE");
-            devicePermissionHelper.requestPermissions(new DevicePermissionHelper
-                    .PermissionGrantListener() {
-                @Override
-                public void onPermissionGranted() {
-                    _requestForFile(type);
-                }
+            devicePermissionHelper.requestPermissions(
+                    new DevicePermissionHelper.PermissionGrantListener() {
+                        @Override
+                        public void onPermissionGranted() {
+                            _requestForFile(type);
+                        }
 
-                @Override
-                public void onPermissionDenied() {
-                    Toast.makeText(mActivity, R.string.toast_permission_download_storage,
-                            Toast.LENGTH_LONG).show();
-                }
+                        @Override
+                        public void onPermissionDenied() {
+                            Toast.makeText(
+                                            mActivity,
+                                            R.string.toast_permission_download_storage,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
 
-                @Override
-                public void onPermissionRationale() {
-                    Toast.makeText(mActivity, R.string.toast_permission_download_storage_help,
-                            Toast.LENGTH_LONG).show();
-                }
-            }, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA});
+                        @Override
+                        public void onPermissionRationale() {
+                            Toast.makeText(
+                                            mActivity,
+                                            R.string.toast_permission_download_storage_help,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    },
+                    new String[] {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA
+                    });
         }
     }
 
@@ -363,14 +391,16 @@ public class OFileManager implements DialogInterface.OnClickListener {
             case CAPTURE_HIGH_IMAGE:
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "Odoo Mobile Attachment");
-                values.put(MediaStore.Images.Media.DESCRIPTION,
-                        "Captured from Odoo Mobile App");
-                newImageUri = mActivity.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                values.put(MediaStore.Images.Media.DESCRIPTION, "Captured from Odoo Mobile App");
+                newImageUri =
+                        mActivity
+                                .getContentResolver()
+                                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, newImageUri);
-                requestIntent(intent, type == RequestType.CAPTURE_IMAGE ?
-                        REQUEST_CAMERA : REQUEST_HIGH_CAMERA);
+                requestIntent(
+                        intent,
+                        type == RequestType.CAPTURE_IMAGE ? REQUEST_CAMERA : REQUEST_HIGH_CAMERA);
                 break;
             case IMAGE_OR_CAPTURE_IMAGE:
             case IMAGE_OR_CAPTURE_HIGH_IMAGE:
@@ -414,8 +444,8 @@ public class OFileManager implements DialogInterface.OnClickListener {
         values.put("file_uri", uri.toString());
         values.put("scheme", uri.getScheme());
         MimeTypeMap mime = MimeTypeMap.getSingleton();
-        String type = mime.getMimeTypeFromExtension(mime
-                .getExtensionFromMimeType(mCR.getType(uri)));
+        String type =
+                mime.getMimeTypeFromExtension(mime.getExtensionFromMimeType(mCR.getType(uri)));
         values.put("file_type", (type == null) ? uri.getScheme() : type);
         values.put("type", type);
         return values;
@@ -439,13 +469,19 @@ public class OFileManager implements DialogInterface.OnClickListener {
                 case REQUEST_CAMERA:
                 case REQUEST_HIGH_CAMERA:
                     OValues values = getURIDetails(newImageUri);
-                    values.put("datas", BitmapUtils.uriToBase64(newImageUri,
-                            mActivity.getContentResolver(), requestCode == REQUEST_CAMERA));
+                    values.put(
+                            "datas",
+                            BitmapUtils.uriToBase64(
+                                    newImageUri,
+                                    mActivity.getContentResolver(),
+                                    requestCode == REQUEST_CAMERA));
                     return values;
                 case REQUEST_IMAGE:
                     values = getURIDetails(data.getData());
-                    values.put("datas", BitmapUtils.uriToBase64(data.getData(),
-                            mActivity.getContentResolver(), true));
+                    values.put(
+                            "datas",
+                            BitmapUtils.uriToBase64(
+                                    data.getData(), mActivity.getContentResolver(), true));
                     return values;
                 case REQUEST_ALL_FILE:
                 default:
@@ -459,8 +495,7 @@ public class OFileManager implements DialogInterface.OnClickListener {
         try {
             mActivity.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
-            makeText(mActivity, "No Activity Found to handle request",
-                    LENGTH_SHORT).show();
+            makeText(mActivity, "No Activity Found to handle request", LENGTH_SHORT).show();
         }
     }
 
@@ -470,7 +505,7 @@ public class OFileManager implements DialogInterface.OnClickListener {
             case IMAGE_OR_CAPTURE_IMAGE:
             case IMAGE_OR_CAPTURE_HIGH_IMAGE:
                 requestType = type;
-                mOptions = new String[]{"Select Image", "Capture Image"};
+                mOptions = new String[] {"Select Image", "Capture Image"};
                 break;
         }
         builder.setSingleChoiceItems(mOptions, -1, this);
@@ -482,12 +517,13 @@ public class OFileManager implements DialogInterface.OnClickListener {
         switch (requestType) {
             case IMAGE_OR_CAPTURE_IMAGE:
             case IMAGE_OR_CAPTURE_HIGH_IMAGE:
-                RequestType captureType = requestType == RequestType.IMAGE_OR_CAPTURE_IMAGE
-                        ? RequestType.CAPTURE_IMAGE : RequestType.CAPTURE_HIGH_IMAGE;
+                RequestType captureType =
+                        requestType == RequestType.IMAGE_OR_CAPTURE_IMAGE
+                                ? RequestType.CAPTURE_IMAGE
+                                : RequestType.CAPTURE_HIGH_IMAGE;
                 requestForFile((which == 0) ? RequestType.IMAGE : captureType);
                 break;
         }
         dialog.dismiss();
     }
-
 }

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p>
- * Created on 7/1/15 5:10 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
 
@@ -33,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.odoo.R;
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
@@ -85,7 +81,14 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     private IOnFieldValueChangeListener mValueUpdateListener = null;
 
     public enum WidgetType {
-        Switch, RadioGroup, SelectionDialog, Searchable, SearchableLive, Image, ImageCircle, Duration;
+        Switch,
+        RadioGroup,
+        SelectionDialog,
+        Searchable,
+        SearchableLive,
+        Image,
+        ImageCircle,
+        Duration;
 
         public static WidgetType getWidgetType(int widget) {
             switch (widget) {
@@ -111,7 +114,16 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     }
 
     public enum FieldType {
-        Text, Boolean, ManyToOne, Chips, Selection, Date, Time, DateTime, Blob, RelationType;
+        Text,
+        Boolean,
+        ManyToOne,
+        Chips,
+        Selection,
+        Date,
+        Time,
+        DateTime,
+        Blob,
+        RelationType;
 
         public static FieldType getTypeValue(int type_val) {
             switch (type_val) {
@@ -144,8 +156,7 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OField(Context context, AttributeSet attrs, int defStyleAttr,
-                  int defStyleRes) {
+    public OField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -160,12 +171,10 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
         init(context, attrs, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
         if (attrs != null) {
-            TypedArray types = mContext.obtainStyledAttributes(attrs,
-                    R.styleable.OField);
+            TypedArray types = mContext.obtainStyledAttributes(attrs, R.styleable.OField);
             mField_name = types.getString(R.styleable.OField_fieldName);
             resId = types.getResourceId(R.styleable.OField_iconResource, 0);
             showIcon = types.getBoolean(R.styleable.OField_showIcon, true);
@@ -174,17 +183,13 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
             int type_value = types.getInt(R.styleable.OField_fieldType, 0);
             mType = FieldType.getTypeValue(type_value);
 
-            with_bottom_padding = types.getBoolean(
-                    R.styleable.OField_withBottomPadding, true);
-            with_top_padding = types.getBoolean(
-                    R.styleable.OField_withTopPadding, true);
+            with_bottom_padding = types.getBoolean(R.styleable.OField_withBottomPadding, true);
+            with_top_padding = types.getBoolean(R.styleable.OField_withTopPadding, true);
             mLabel = types.getString(R.styleable.OField_controlLabel);
             mValue = types.getString(R.styleable.OField_defaultFieldValue);
             mParsePattern = types.getString(R.styleable.OField_parsePattern);
-            mValueArrayId = types.getResourceId(
-                    R.styleable.OField_valueArray, -1);
-            mWidgetType = WidgetType.getWidgetType(types.getInt(
-                    R.styleable.OField_widgetType, -1));
+            mValueArrayId = types.getResourceId(R.styleable.OField_valueArray, -1);
+            mWidgetType = WidgetType.getWidgetType(types.getInt(R.styleable.OField_widgetType, -1));
             mWidgetImageSize = types.getDimension(R.styleable.OField_widgetImageSize, -1);
             withPadding = types.getBoolean(R.styleable.OField_withOutSidePadding, true);
 
@@ -197,8 +202,7 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
             defaultImage = types.getResourceId(R.styleable.OField_defaultImage, -1);
             types.recycle();
         }
-        if (mContext.getClass().getSimpleName().contains("BridgeContext"))
-            initControl();
+        if (mContext.getClass().getSimpleName().contains("BridgeContext")) initControl();
     }
 
     public void setFormView(OForm formView) {
@@ -212,8 +216,9 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     private void initLayout() {
         removeAllViews();
         if (useTemplate) {
-            View layout = LayoutInflater.from(mContext).inflate(
-                    R.layout.base_control_template, this, false);
+            View layout =
+                    LayoutInflater.from(mContext)
+                            .inflate(R.layout.base_control_template, this, false);
 
             if (withPadding) {
                 int top_padding = layout.getPaddingTop();
@@ -290,12 +295,9 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
 
     private void setImageIcon() {
         if (showIcon) {
-            if (resId != 0)
-                img_icon.setImageResource(resId);
-            if (tint_color != 0)
-                img_icon.setColorFilter(tint_color);
-        } else
-            img_icon.setVisibility(View.GONE);
+            if (resId != 0) img_icon.setImageResource(resId);
+            if (tint_color != 0) img_icon.setColorFilter(tint_color);
+        } else img_icon.setVisibility(View.GONE);
     }
 
     public <T> void setColumn(OColumn column) {
@@ -358,12 +360,9 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     }
 
     public String getLabelText() {
-        if (mLabel != null)
-            return mLabel;
-        if (mColumn != null)
-            return mColumn.getLabel();
-        if (mControlData != null)
-            return mControlData.getLabel();
+        if (mLabel != null) return mLabel;
+        if (mColumn != null) return mColumn.getLabel();
+        if (mControlData != null) return mControlData.getLabel();
         return getFieldName();
     }
 
@@ -375,8 +374,7 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     }
 
     public Object getValue() {
-        if (mControlData != null)
-            return mControlData.getValue();
+        if (mControlData != null) return mControlData.getValue();
         return null;
     }
 
@@ -386,8 +384,7 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
             Object value = getValue();
             mControlData.setEditable(editable);
             mControlData.initControl();
-            if (value != null)
-                mControlData.setValue(value);
+            if (value != null) mControlData.setValue(value);
         }
     }
 
@@ -462,8 +459,8 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
     }
 
     private TextView getLabelView() {
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         TextView label = new TextView(mContext);
         if (labelSize > -1) {
             label.setTextSize(TypedValue.COMPLEX_UNIT_PX, labelSize);
@@ -519,8 +516,7 @@ public class OField extends LinearLayout implements IOControlData.ValueUpdateLis
         if (mEditable) {
             if (mControlData.isControlReady()) {
                 ODataRow row = new ODataRow();
-                if (mOnChangeCallback != null
-                        || mOnDomainFilterCallbacks != null) {
+                if (mOnChangeCallback != null || mOnDomainFilterCallbacks != null) {
                     if (!(value instanceof ODataRow)) {
                         row.put(mColumn.getName(), value);
                     } else {

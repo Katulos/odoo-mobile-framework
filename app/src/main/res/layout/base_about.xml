@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/odoo_mobile_small"
-                    android:tint="#ffffff" />
+                    app:tint="#ffffff" />
 
                 <TextView
                     android:id="@+id/txvVersionName"

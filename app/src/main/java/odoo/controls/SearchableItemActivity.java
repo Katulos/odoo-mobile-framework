@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 7/1/15 5:11 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 7/1/15 5:11 PM
  */
 package odoo.controls;
 
@@ -24,8 +21,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -34,7 +29,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.odoo.R;
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
@@ -45,13 +41,15 @@ import com.odoo.core.rpc.helper.OdooFields;
 import com.odoo.core.support.list.OListAdapter;
 import com.odoo.core.utils.OControls;
 import com.odoo.core.utils.OResource;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchableItemActivity extends ActionBarActivity implements
-        AdapterView.OnItemClickListener, TextWatcher, View.OnClickListener,
-        OListAdapter.OnSearchChange, IOnQuickRecordCreateListener {
+public class SearchableItemActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener,
+                TextWatcher,
+                View.OnClickListener,
+                OListAdapter.OnSearchChange,
+                IOnQuickRecordCreateListener {
     public static final String TAG = SearchableItemActivity.class.getSimpleName();
 
     private EditText edt_searchable_input;
@@ -93,12 +91,10 @@ public class SearchableItemActivity extends ActionBarActivity implements
                 selected_position = extra.getInt("selected_position");
             }
             if (extra.containsKey("search_hint")) {
-                edt_searchable_input.setHint("Search "
-                        + extra.getString("search_hint"));
+                edt_searchable_input.setHint("Search " + extra.getString("search_hint"));
             }
             if (resource_array_id != -1) {
-                String[] arrays = getResources().getStringArray(
-                        resource_array_id);
+                String[] arrays = getResources().getStringArray(resource_array_id);
                 for (int i = 0; i < arrays.length; i++) {
                     ODataRow row = new ODataRow();
                     row.put(OColumn.ROW_ID, i);
@@ -120,28 +116,29 @@ public class SearchableItemActivity extends ActionBarActivity implements
 
             mList = (ListView) findViewById(R.id.searchable_items);
             mList.setOnItemClickListener(this);
-            mAdapter = new OListAdapter(this,
-                    android.R.layout.simple_expandable_list_item_1, objects) {
-                @Override
-                public View getView(int position, View convertView,
-                                    ViewGroup parent) {
-                    View v = convertView;
-                    if (v == null)
-                        v = getLayoutInflater().inflate(getResource(), parent,
-                                false);
-                    ODataRow row = (ODataRow) objects.get(position);
-                    OControls.setText(v, android.R.id.text1,
-                            row.getString(mRelModel.getDefaultNameColumn()));
-                    if (row.contains(OColumn.ROW_ID)
-                            && selected_position == row.getInt(OColumn.ROW_ID)) {
-                        v.setBackgroundColor(getResources().getColor(
-                                R.color.control_pressed));
-                    } else {
-                        v.setBackgroundColor(Color.TRANSPARENT);
-                    }
-                    return v;
-                }
-            };
+            mAdapter =
+                    new OListAdapter(
+                            this, android.R.layout.simple_expandable_list_item_1, objects) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View v = convertView;
+                            if (v == null)
+                                v = getLayoutInflater().inflate(getResource(), parent, false);
+                            ODataRow row = (ODataRow) objects.get(position);
+                            OControls.setText(
+                                    v,
+                                    android.R.id.text1,
+                                    row.getString(mRelModel.getDefaultNameColumn()));
+                            if (row.contains(OColumn.ROW_ID)
+                                    && selected_position == row.getInt(OColumn.ROW_ID)) {
+                                v.setBackgroundColor(
+                                        getResources().getColor(R.color.control_pressed));
+                            } else {
+                                v.setBackgroundColor(Color.TRANSPARENT);
+                            }
+                            return v;
+                        }
+                    };
             if (mLiveSearch) {
                 mAdapter.setOnSearchChange(this);
             }
@@ -152,8 +149,7 @@ public class SearchableItemActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ODataRow data = (ODataRow) objects.get(position);
         if (!data.contains(OColumn.ROW_ID)) {
             QuickCreateRecordProcess quickCreateRecordProcess = new QuickCreateRecordProcess(this);
@@ -178,10 +174,7 @@ public class SearchableItemActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count,
-                                  int after) {
-
-    }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -199,9 +192,7 @@ public class SearchableItemActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-
-    }
+    public void afterTextChanged(Editable s) {}
 
     @Override
     public void onClick(View v) {
@@ -212,16 +203,13 @@ public class SearchableItemActivity extends ActionBarActivity implements
     @Override
     public void onSearchChange(List<Object> newRecords) {
         if (newRecords.size() <= 0) {
-            if (mLiveDataLoader != null)
-                mLiveDataLoader.cancel(true);
+            if (mLiveDataLoader != null) mLiveDataLoader.cancel(true);
             if (edt_searchable_input.getText().length() >= 3) {
                 mLiveDataLoader = new LiveSearch();
-                mLiveDataLoader.execute(edt_searchable_input.getText()
-                        .toString());
+                mLiveDataLoader.execute(edt_searchable_input.getText().toString());
             }
         }
     }
-
 
     private class LiveSearch extends AsyncTask<String, Void, List<ODataRow>> {
 
@@ -280,7 +268,8 @@ public class SearchableItemActivity extends ActionBarActivity implements
             super.onPreExecute();
             progressDialog = new ProgressDialog(SearchableItemActivity.this);
             progressDialog.setTitle(R.string.title_please_wait);
-            progressDialog.setMessage(OResource.string(SearchableItemActivity.this, R.string.title_working));
+            progressDialog.setMessage(
+                    OResource.string(SearchableItemActivity.this, R.string.title_working));
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -305,5 +294,4 @@ public class SearchableItemActivity extends ActionBarActivity implements
             progressDialog.dismiss();
         }
     }
-
 }

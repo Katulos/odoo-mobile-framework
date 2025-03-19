@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p>
- * Created on 31/12/14 6:54 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 31/12/14 6:54 PM
  */
 package com.odoo.core.orm.provider;
 
@@ -27,8 +24,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-
+import androidx.annotation.NonNull;
 import com.odoo.core.auth.OdooAccountManager;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.OValues;
@@ -37,15 +33,14 @@ import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.support.OUser;
 import com.odoo.core.utils.ODateUtils;
 import com.odoo.core.utils.OObjectUtils;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
 public class BaseModelProvider extends ContentProvider {
     public static final String TAG = BaseModelProvider.class.getSimpleName();
-    public final static String KEY_MODEL = "key_model";
-    public final static String KEY_USERNAME = "key_username";
+    public static final String KEY_MODEL = "key_model";
+    public static final String KEY_USERNAME = "key_username";
     private final int COLLECTION = 1;
     private final int SINGLE_ROW = 2;
     public UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -87,11 +82,15 @@ public class BaseModelProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] base_projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(
+            Uri uri,
+            String[] base_projection,
+            String selection,
+            String[] selectionArgs,
+            String sortOrder) {
         OModel model = getModel(uri);
         setMatcher(model, uri);
-        if (model == null)
-            return null;
+        if (model == null) return null;
         String[] projection = removeRelationColumns(model, base_projection);
         int match = matcher.match(uri);
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -104,21 +103,34 @@ public class BaseModelProvider extends ContentProvider {
         Cursor cr = null;
         switch (match) {
             case COLLECTION:
-                cr = builder.query(model.getReadableDatabase(), projection,
-                        selection, selectionArgs, null, null, sortOrder);
+                cr =
+                        builder.query(
+                                model.getReadableDatabase(),
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null,
+                                sortOrder);
                 break;
             case SINGLE_ROW:
                 int row_id = Integer.parseInt(uri.getLastPathSegment());
-                cr = builder.query(model.getReadableDatabase(), projection,
-                        OColumn.ROW_ID + " = ? ", new String[]{row_id + ""}, null, null, null);
+                cr =
+                        builder.query(
+                                model.getReadableDatabase(),
+                                projection,
+                                OColumn.ROW_ID + " = ? ",
+                                new String[] {row_id + ""},
+                                null,
+                                null,
+                                null);
             case UriMatcher.NO_MATCH:
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         Context ctx = getContext();
-        if (cr != null && ctx != null)
-            cr.setNotificationUri(ctx.getContentResolver(), uri);
+        if (cr != null && ctx != null) cr.setNotificationUri(ctx.getContentResolver(), uri);
         return cr;
     }
 
@@ -129,7 +141,8 @@ public class BaseModelProvider extends ContentProvider {
                 OColumn column = model.getColumn(key);
                 if (column != null && column.getRelationType() == null) {
                     columns.add(key);
-                } else if (column != null && column.getRelationType() == OColumn.RelationType.ManyToOne) {
+                } else if (column != null
+                        && column.getRelationType() == OColumn.RelationType.ManyToOne) {
                     columns.add(key);
                 }
             }
@@ -151,10 +164,8 @@ public class BaseModelProvider extends ContentProvider {
         ContentValues[] values = generateValues(model, all_values);
         ContentValues value_to_insert = values[0];
         value_to_insert.put("_write_date", ODateUtils.getUTCDate());
-        if (!value_to_insert.containsKey("_is_active"))
-            value_to_insert.put("_is_active", "true");
-        if (!value_to_insert.containsKey("_is_dirty"))
-            value_to_insert.put("_is_dirty", "false");
+        if (!value_to_insert.containsKey("_is_active")) value_to_insert.put("_is_active", "true");
+        if (!value_to_insert.containsKey("_is_dirty")) value_to_insert.put("_is_dirty", "false");
         int match = matcher.match(uri);
         switch (match) {
             case COLLECTION:
@@ -162,13 +173,12 @@ public class BaseModelProvider extends ContentProvider {
                 long new_id = db.insert(model.getTableName(), null, value_to_insert);
                 // Updating relation columns for record
                 if (values[1].size() > 0) {
-                    storeUpdateRelationRecords(model, values[1], OColumn.ROW_ID + "  = ?",
-                            new String[]{new_id + ""});
+                    storeUpdateRelationRecords(
+                            model, values[1], OColumn.ROW_ID + "  = ?", new String[] {new_id + ""});
                 }
                 return Uri.withAppendedPath(uri, new_id + "");
             case SINGLE_ROW:
-                throw new UnsupportedOperationException(
-                        "Insert not supported on URI: " + uri);
+                throw new UnsupportedOperationException("Insert not supported on URI: " + uri);
             case UriMatcher.NO_MATCH:
                 break;
             default:
@@ -192,7 +202,11 @@ public class BaseModelProvider extends ContentProvider {
             case SINGLE_ROW:
                 db = model.getWritableDatabase();
                 String row_id = uri.getLastPathSegment();
-                count = db.delete(model.getTableName(), OColumn.ROW_ID + "  = ?", new String[]{row_id});
+                count =
+                        db.delete(
+                                model.getTableName(),
+                                OColumn.ROW_ID + "  = ?",
+                                new String[] {row_id});
                 break;
             case UriMatcher.NO_MATCH:
                 break;
@@ -204,7 +218,8 @@ public class BaseModelProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues all_values, String selection, String[] selectionArgs) {
+    public int update(
+            @NonNull Uri uri, ContentValues all_values, String selection, String[] selectionArgs) {
         OModel model = getModel(uri);
         setMatcher(model, uri);
         ContentValues[] values = generateValues(model, all_values);
@@ -230,10 +245,16 @@ public class BaseModelProvider extends ContentProvider {
             case SINGLE_ROW:
                 String row_id = uri.getLastPathSegment();
                 db = model.getWritableDatabase();
-                count = db.update(model.getTableName(), value_to_update, OColumn.ROW_ID + "  = ?", new String[]{row_id});
+                count =
+                        db.update(
+                                model.getTableName(),
+                                value_to_update,
+                                OColumn.ROW_ID + "  = ?",
+                                new String[] {row_id});
                 // Updating relation columns for record
                 if (values[1].size() > 0) {
-                    storeUpdateRelationRecords(model, values[1], OColumn.ROW_ID + "  = ?", new String[]{row_id});
+                    storeUpdateRelationRecords(
+                            model, values[1], OColumn.ROW_ID + "  = ?", new String[] {row_id});
                 }
                 break;
             case UriMatcher.NO_MATCH:
@@ -245,14 +266,14 @@ public class BaseModelProvider extends ContentProvider {
         return count;
     }
 
-    private void storeUpdateRelationRecords(OModel model, ContentValues values,
-                                            String selection, String[] args) {
+    private void storeUpdateRelationRecords(
+            OModel model, ContentValues values, String selection, String[] args) {
         int row_id = model.selectRowId(selection, args);
         for (String key : values.keySet()) {
             try {
                 OColumn column = model.getColumn(key);
-                RelValues relValues = (RelValues) OObjectUtils.byteToObject(
-                        (byte[]) values.get(key));
+                RelValues relValues =
+                        (RelValues) OObjectUtils.byteToObject((byte[]) values.get(key));
                 model.handleRelationValues(row_id, column, relValues);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -276,8 +297,9 @@ public class BaseModelProvider extends ContentProvider {
                             // Creating many to one record and assigning id to record
                             OModel m2oModel = model.createInstance(column.getType());
                             try {
-                                OValues m2oVal = (OValues) OObjectUtils.byteToObject(
-                                        (byte[]) values.get(key));
+                                OValues m2oVal =
+                                        (OValues)
+                                                OObjectUtils.byteToObject((byte[]) values.get(key));
                                 int id = m2oModel.insert(m2oVal);
                                 data_value.put(key, id);
                             } catch (IOException | ClassNotFoundException e) {
@@ -290,7 +312,7 @@ public class BaseModelProvider extends ContentProvider {
                 }
             }
         }
-        return new ContentValues[]{data_value.toContentValues(), rel_value.toContentValues()};
+        return new ContentValues[] {data_value.toContentValues(), rel_value.toContentValues()};
     }
 
     private void notifyDataChange(Uri uri) {

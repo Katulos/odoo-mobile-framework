@@ -1,34 +1,28 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 22/4/15 11:56 AM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 22/4/15 11:56 AM
  */
 package com.odoo.core.rpc.helper;
 
 import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.odoo.core.rpc.helper.utils.OdooLog;
 import com.odoo.core.rpc.helper.utils.gson.OdooResult;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class OdooSession {
     public static final String TAG = OdooSession.class.getSimpleName();
@@ -50,15 +44,13 @@ public class OdooSession {
         OdooLog.v("Parsing Session :" + result);
         OdooSession session = new OdooSession();
         if (!result.containsKey("error")) {
-            if (result.get("username") != null)
-                session.setUsername(result.getString("username"));
+            if (result.get("username") != null) session.setUsername(result.getString("username"));
             session.setUserContext(result.getMap("user_context"));
             if (result.get("uid") != null && !result.getString("uid").equals("false"))
                 session.setUid(result.getInt("uid"));
             if (result.get("company_id") != null && !result.getString("company_id").equals("false"))
                 session.setCompanyId(result.getInt("company_id"));
-            if (result.get("db") != null)
-                session.setDb(result.getString("db"));
+            if (result.get("db") != null) session.setDb(result.getString("db"));
             session.setSessionId(result.getString("session_id"));
         }
         return session;
@@ -130,7 +122,6 @@ public class OdooSession {
         this.currencies = currencies;
     }
 
-
     public String getWarning_level() {
         return warning_level;
     }
@@ -189,21 +180,43 @@ public class OdooSession {
 
     @Override
     public String toString() {
-        return "OdooSession{" +
-                "username='" + username + '\'' +
-                ", db='" + db + '\'' +
-                ", sessionId='" + sessionId + '\'' +
-                ", userContext=" + userContext +
-                ", companyId=" + companyId +
-                ", uid=" + uid +
-                ", currencies=" + currencies +
-                ", warning_level='" + warning_level + '\'' +
-                ", is_admin=" + is_admin +
-                ", server_version='" + server_version + '\'' +
-                ", web_base_url='" + web_base_url + '\'' +
-                ", expiration_reason='" + expiration_reason + '\'' +
-                ", expiration_date='" + expiration_date + '\'' +
-                ", is_superuser=" + is_superuser +
-                '}';
+        return "OdooSession{"
+                + "username='"
+                + username
+                + '\''
+                + ", db='"
+                + db
+                + '\''
+                + ", sessionId='"
+                + sessionId
+                + '\''
+                + ", userContext="
+                + userContext
+                + ", companyId="
+                + companyId
+                + ", uid="
+                + uid
+                + ", currencies="
+                + currencies
+                + ", warning_level='"
+                + warning_level
+                + '\''
+                + ", is_admin="
+                + is_admin
+                + ", server_version='"
+                + server_version
+                + '\''
+                + ", web_base_url='"
+                + web_base_url
+                + '\''
+                + ", expiration_reason='"
+                + expiration_reason
+                + '\''
+                + ", expiration_date='"
+                + expiration_date
+                + '\''
+                + ", is_superuser="
+                + is_superuser
+                + '}';
     }
 }

@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 7/1/15 5:10 PM
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
 
@@ -32,11 +29,10 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.odoo.core.orm.fields.OColumn;
 
-public class OBooleanField extends LinearLayout implements IOControlData,
-        CompoundButton.OnCheckedChangeListener {
+public class OBooleanField extends LinearLayout
+        implements IOControlData, CompoundButton.OnCheckedChangeListener {
     public static final String TAG = OBooleanField.class.getSimpleName();
 
     private Context mContext;
@@ -56,8 +52,7 @@ public class OBooleanField extends LinearLayout implements IOControlData,
     private int textColor = Color.BLACK;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OBooleanField(Context context, AttributeSet attrs, int defStyleAttr,
-                         int defStyleRes) {
+    public OBooleanField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -77,20 +72,17 @@ public class OBooleanField extends LinearLayout implements IOControlData,
         init(context, null, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (attrs != null) {
+        if (attrs != null) {}
 
-        }
-        if (mContext.getClass().getSimpleName().contains("BridgeContext"))
-            initControl();
+        if (mContext.getClass().getSimpleName().contains("BridgeContext")) initControl();
     }
 
     public void initControl() {
         mReady = false;
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams params =
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         removeAllViews();
         setOrientation(VERTICAL);
         if (isEditable()) {
@@ -101,8 +93,7 @@ public class OBooleanField extends LinearLayout implements IOControlData,
                         mSwitch.setLayoutParams(params);
                         mSwitch.setOnCheckedChangeListener(this);
                         setValue(getValue());
-                        if (mLabel != null)
-                            mSwitch.setText(mLabel);
+                        if (mLabel != null) mSwitch.setText(mLabel);
                         if (textSize > -1) {
                             mSwitch.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                         }
@@ -119,8 +110,7 @@ public class OBooleanField extends LinearLayout implements IOControlData,
                 mCheckbox = new CheckBox(mContext);
                 mCheckbox.setLayoutParams(params);
                 mCheckbox.setOnCheckedChangeListener(this);
-                if (mLabel != null)
-                    mCheckbox.setText(mLabel);
+                if (mLabel != null) mCheckbox.setText(mLabel);
                 if (textSize > -1) {
                     mCheckbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                 }
@@ -134,8 +124,7 @@ public class OBooleanField extends LinearLayout implements IOControlData,
             txvView = new TextView(mContext);
             txvView.setLayoutParams(params);
             txvView.setText(getCheckBoxLabel());
-            if (mLabel != null)
-                txvView.setText(mLabel);
+            if (mLabel != null) txvView.setText(mLabel);
             if (textSize > -1) {
                 txvView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
@@ -148,22 +137,19 @@ public class OBooleanField extends LinearLayout implements IOControlData,
 
     @Override
     public void setValue(Object value) {
-        if (value == null)
-            return;
+        if (value == null) return;
         mValue = Boolean.parseBoolean(value.toString());
         if (isEditable()) {
             if (mWidget != null) {
                 switch (mWidget) {
                     case Switch:
-                        mSwitch.setChecked(Boolean.parseBoolean(getValue()
-                                .toString()));
+                        mSwitch.setChecked(Boolean.parseBoolean(getValue().toString()));
                         break;
                     default:
                         break;
                 }
             } else {
-                mCheckbox.setChecked(Boolean
-                        .parseBoolean(getValue().toString()));
+                mCheckbox.setChecked(Boolean.parseBoolean(getValue().toString()));
             }
         } else {
             txvView.setText(getCheckBoxLabel());
@@ -195,8 +181,7 @@ public class OBooleanField extends LinearLayout implements IOControlData,
 
     @Override
     public void setError(String error) {
-        if (error != null)
-            Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
+        if (error != null) Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -236,18 +221,15 @@ public class OBooleanField extends LinearLayout implements IOControlData,
 
     @Override
     public String getLabel() {
-        if (mLabel != null)
-            return mLabel;
-        if (mColumn != null)
-            return mColumn.getLabel();
+        if (mLabel != null) return mLabel;
+        if (mColumn != null) return mColumn.getLabel();
         return "unknown";
     }
 
     @Override
     public void setColumn(OColumn column) {
         mColumn = column;
-        if (mLabel == null && mColumn != null)
-            mLabel = mColumn.getLabel();
+        if (mLabel == null && mColumn != null) mLabel = mColumn.getLabel();
     }
 
     @Override

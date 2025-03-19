@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 7/1/15 5:10 PM
+ * <p>Created on 7/1/15 5:10 PM
  */
 package odoo.controls;
 
@@ -25,7 +22,6 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.utils.BitmapUtils;
 
@@ -44,8 +40,7 @@ public class OBlobField extends LinearLayout implements IOControlData {
     private Integer defaultImage = -1;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OBlobField(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    public OBlobField(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -65,20 +60,17 @@ public class OBlobField extends LinearLayout implements IOControlData {
         init(context, null, 0, 0);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr,
-                      int defStyleRes) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mContext = context;
-        if (attrs != null) {
+        if (attrs != null) {}
 
-        }
-        if (mContext.getClass().getSimpleName().contains("BridgeContext"))
-            initControl();
+        if (mContext.getClass().getSimpleName().contains("BridgeContext")) initControl();
     }
 
     @Override
     public void initControl() {
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
+        LayoutParams params =
+                new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         if (imageSize > -1) {
             params = new LayoutParams((int) imageSize, (int) imageSize);
         }
@@ -107,11 +99,8 @@ public class OBlobField extends LinearLayout implements IOControlData {
         }
     }
 
-
     @Override
-    public void setError(String error) {
-
-    }
+    public void setError(String error) {}
 
     @Override
     public View getFieldView() {
@@ -145,10 +134,8 @@ public class OBlobField extends LinearLayout implements IOControlData {
 
     @Override
     public String getLabel() {
-        if (mLabel != null)
-            return mLabel;
-        if (mCol != null)
-            return mCol.getLabel();
+        if (mLabel != null) return mLabel;
+        if (mCol != null) return mCol.getLabel();
         return "unknown";
     }
 
@@ -163,9 +150,7 @@ public class OBlobField extends LinearLayout implements IOControlData {
     }
 
     @Override
-    public void resetData() {
-
-    }
+    public void resetData() {}
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

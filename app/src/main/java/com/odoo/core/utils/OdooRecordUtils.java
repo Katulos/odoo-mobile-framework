@@ -1,19 +1,15 @@
 package com.odoo.core.utils;
 
 import android.text.TextUtils;
-
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.rpc.helper.ORecordValues;
 import com.odoo.core.rpc.helper.utils.gson.OdooRecord;
-
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+import org.json.JSONArray;
 
 public class OdooRecordUtils {
     public static <T> List<T> toList(JSONArray array) {
@@ -33,8 +29,7 @@ public class OdooRecordUtils {
     public static <T> JSONArray toArray(List<T> list) {
         JSONArray array = new JSONArray();
         try {
-            for (T obj : list)
-                array.put(obj);
+            for (T obj : list) array.put(obj);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,15 +71,16 @@ public class OdooRecordUtils {
         ORecordValues values = new ORecordValues();
         for (OColumn col : model.getColumns(false)) {
             if (col.getName().equals("id") && row.getInt("id") == 0) {
-                    /* FIXME: 7.0 not supporting
-                    Response from server : column "id" specified more than once
-                     */
+                /* FIXME: 7.0 not supporting
+                Response from server : column "id" specified more than once
+                 */
                 continue;
             }
             if (col.getRelationType() == null) {
                 if (!col.getName().equals("create_date") || !col.getName().equals("write_date")) {
                     Object val = row.get(col.getName());
-                    if (val == null || val.toString().equals("false")
+                    if (val == null
+                            || val.toString().equals("false")
                             || TextUtils.isEmpty(val.toString())) {
                         val = false;
                     }
@@ -105,13 +101,11 @@ public class OdooRecordUtils {
                         break;
                     case OneToMany:
                         List<Object> o2mRecords = new ArrayList<>();
-                        List<ODataRow> o2mRecordList = row.getO2MRecord(
-                                col.getName()).browseEach();
+                        List<ODataRow> o2mRecordList = row.getO2MRecord(col.getName()).browseEach();
                         List<Integer> rec_ids = new ArrayList<>();
                         if (o2mRecordList.size() > 0) {
                             for (ODataRow o2mR : o2mRecordList) {
-                                if (o2mR.getInt("id") != 0)
-                                    rec_ids.add(o2mR.getInt("id"));
+                                if (o2mR.getInt("id") != 0) rec_ids.add(o2mR.getInt("id"));
                             }
                         }
                         o2mRecords.add(6);
@@ -124,13 +118,11 @@ public class OdooRecordUtils {
                         break;
                     case ManyToMany:
                         List<Object> m2mRecords = new ArrayList<>();
-                        List<ODataRow> m2mRecordList = row.getM2MRecord(
-                                col.getName()).browseEach();
+                        List<ODataRow> m2mRecordList = row.getM2MRecord(col.getName()).browseEach();
                         rec_ids = new ArrayList<>();
                         if (!m2mRecordList.isEmpty()) {
                             for (ODataRow o2mR : m2mRecordList) {
-                                if (o2mR.getInt("id") != 0)
-                                    rec_ids.add(o2mR.getInt("id"));
+                                if (o2mR.getInt("id") != 0) rec_ids.add(o2mR.getInt("id"));
                             }
                         }
                         m2mRecords.add(6);
@@ -142,7 +134,6 @@ public class OdooRecordUtils {
                         break;
                 }
             }
-
         }
         return values;
     }

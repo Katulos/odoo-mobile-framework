@@ -1,21 +1,18 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
  *
- * Created on 9/1/15 11:32 AM
+ * <p>Created on 9/1/15 11:32 AM
  */
 package com.odoo;
 
@@ -24,11 +21,10 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SyncAdapterType;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import com.odoo.core.account.About;
 import com.odoo.core.account.OdooLogin;
 import com.odoo.core.support.OUser;
@@ -36,7 +32,6 @@ import com.odoo.core.support.sync.SyncUtils;
 import com.odoo.core.utils.OAppBarUtils;
 import com.odoo.core.utils.OPreferenceManager;
 import com.odoo.core.utils.OResource;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.base_setting_activity);
         OAppBarUtils.setAppBar(this, true);
         ActionBar actionbar = getSupportActionBar();
-        if(actionbar!=null) {
+        if (actionbar != null) {
             actionbar.setHomeButtonEnabled(true);
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setTitle(R.string.title_application_settings);
@@ -59,8 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void startActivity(Intent intent) {
-        if (intent.getAction() != null
-                && intent.getAction().equals(ACTION_ABOUT)) {
+        if (intent.getAction() != null && intent.getAction().equals(ACTION_ABOUT)) {
             Intent about = new Intent(this, About.class);
             super.startActivity(about);
             return;
@@ -75,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onDetachedFromWindow() {
@@ -99,20 +92,21 @@ public class SettingsActivity extends AppCompatActivity {
             default_authorities.add("com.android.contacts");
             SyncAdapterType[] list = ContentResolver.getSyncAdapterTypes();
             for (SyncAdapterType lst : list) {
-                if (lst.authority.contains("com.odoo")
-                        && lst.authority.contains("providers")) {
+                if (lst.authority.contains("com.odoo") && lst.authority.contains("providers")) {
                     default_authorities.add(lst.authority);
                 }
             }
             for (String authority : default_authorities) {
-                boolean isSyncActive = ContentResolver.getSyncAutomatically(
-                        mAccount, authority);
+                boolean isSyncActive = ContentResolver.getSyncAutomatically(mAccount, authority);
                 if (isSyncActive) {
                     SyncUtils.get(this).setSyncPeriodic(authority, sync_interval, 60, 1);
                 }
             }
-            Toast.makeText(this, OResource.string(this, R.string.toast_setting_saved),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                            this,
+                            OResource.string(this, R.string.toast_setting_saved),
+                            Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }

@@ -5,10 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
-
+import androidx.core.view.ViewCompat;
 import com.odoo.R;
 
 public class ODrawerScrollView extends ScrollView {
@@ -34,13 +33,12 @@ public class ODrawerScrollView extends ScrollView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.ODrawerScrollView, defStyle, 0);
+        final TypedArray a =
+                context.obtainStyledAttributes(attrs, R.styleable.ODrawerScrollView, defStyle, 0);
         if (a == null) {
             return;
         }
-        mInsetForeground = a
-                .getDrawable(R.styleable.ODrawerScrollView__insetForeground);
+        mInsetForeground = a.getDrawable(R.styleable.ODrawerScrollView__insetForeground);
         a.recycle();
 
         setWillNotDraw(true);
@@ -78,14 +76,12 @@ public class ODrawerScrollView extends ScrollView {
             mInsetForeground.draw(canvas);
 
             // Left
-            mTempRect
-                    .set(0, mInsets.top, mInsets.left, height - mInsets.bottom);
+            mTempRect.set(0, mInsets.top, mInsets.left, height - mInsets.bottom);
             mInsetForeground.setBounds(mTempRect);
             mInsetForeground.draw(canvas);
 
             // Right
-            mTempRect.set(width - mInsets.right, mInsets.top, width, height
-                    - mInsets.bottom);
+            mTempRect.set(width - mInsets.right, mInsets.top, width, height - mInsets.bottom);
             mInsetForeground.setBounds(mTempRect);
             mInsetForeground.draw(canvas);
 
@@ -110,11 +106,10 @@ public class ODrawerScrollView extends ScrollView {
     }
 
     /**
-     * Allows the calling container to specify a callback for custom processing
-     * when insets change (i.e. when {@link #fitSystemWindows(android.graphics.Rect)} is called.
-     * This is useful for setting padding on UI elements based on UI chrome
-     * insets (e.g. a Google Map or a ListView). When using with ListView or
-     * GridView, remember to set clipToPadding to false.
+     * Allows the calling container to specify a callback for custom processing when insets change
+     * (i.e. when {@link #fitSystemWindows(android.graphics.Rect)} is called. This is useful for
+     * setting padding on UI elements based on UI chrome insets (e.g. a Google Map or a ListView).
+     * When using with ListView or GridView, remember to set clipToPadding to false.
      */
     public void setOnInsetsCallback(OnInsetsCallback onInsetsCallback) {
         mOnInsetsCallback = onInsetsCallback;

@@ -1,28 +1,24 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 31/12/14 11:20 AM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 31/12/14 11:20 AM
  */
 package com.odoo.core.orm.fields;
 
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.annotation.Odoo;
 import com.odoo.core.orm.fields.utils.DomainFilterParser;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +49,7 @@ public class OColumn {
     private Integer condition_operator_index = 0;
     private Integer recordSyncLimit = 0;
 
-    //Annotation properties
+    // Annotation properties
     private Method mOnChangeMethod = null;
     private Boolean mOnChangeBGProcess = false;
     private Boolean mHasDomainFilterColumn = false;
@@ -174,14 +170,14 @@ public class OColumn {
     }
 
     public OColumn addDomain(String column_name, String operator, Object value) {
-        columnDomains.put(column_name, new ColumnDomain(column_name, operator,
-                value));
+        columnDomains.put(column_name, new ColumnDomain(column_name, operator, value));
         return this;
     }
 
     public OColumn addDomain(String condition_operator) {
-        columnDomains.put("condition_operator_" + (condition_operator_index++)
-                + condition_operator, new ColumnDomain(condition_operator));
+        columnDomains.put(
+                "condition_operator_" + (condition_operator_index++) + condition_operator,
+                new ColumnDomain(condition_operator));
         return this;
     }
 
@@ -297,8 +293,7 @@ public class OColumn {
      * @return the functional store depends
      */
     public List<String> getFunctionalStoreDepends() {
-        if (functional_store_depends != null)
-            return Arrays.asList(functional_store_depends);
+        if (functional_store_depends != null) return Arrays.asList(functional_store_depends);
         return new ArrayList<String>();
     }
 
@@ -355,29 +350,53 @@ public class OColumn {
 
     @Override
     public String toString() {
-        return "OColumn{" +
-                "name='" + name + '\'' +
-                ", label='" + label + '\'' +
-                ", related_column='" + related_column + '\'' +
-                ", size=" + size +
-                ", type=" + type +
-                ", relationType=" + relationType +
-                ", defaultValue=" + defaultValue +
-                ", autoIncrement=" + autoIncrement +
-                ", required=" + required +
-                ", isLocalColumn=" + isLocalColumn +
-                ", columnDomains=" + columnDomains +
-                ", condition_operator_index=" + condition_operator_index +
-                ", recordSyncLimit=" + recordSyncLimit +
-                ", mOnChangeMethod=" + mOnChangeMethod +
-                ", mOnChangeBGProcess=" + mOnChangeBGProcess +
-                ", mHasDomainFilterColumn=" + mHasDomainFilterColumn +
-                ", is_functional_column=" + is_functional_column +
-                ", functional_method=" + functional_method +
-                ", use_annotation=" + use_annotation +
-                ", functional_store=" + functional_store +
-                ", functional_store_depends=" + Arrays.toString(functional_store_depends) +
-                '}';
+        return "OColumn{"
+                + "name='"
+                + name
+                + '\''
+                + ", label='"
+                + label
+                + '\''
+                + ", related_column='"
+                + related_column
+                + '\''
+                + ", size="
+                + size
+                + ", type="
+                + type
+                + ", relationType="
+                + relationType
+                + ", defaultValue="
+                + defaultValue
+                + ", autoIncrement="
+                + autoIncrement
+                + ", required="
+                + required
+                + ", isLocalColumn="
+                + isLocalColumn
+                + ", columnDomains="
+                + columnDomains
+                + ", condition_operator_index="
+                + condition_operator_index
+                + ", recordSyncLimit="
+                + recordSyncLimit
+                + ", mOnChangeMethod="
+                + mOnChangeMethod
+                + ", mOnChangeBGProcess="
+                + mOnChangeBGProcess
+                + ", mHasDomainFilterColumn="
+                + mHasDomainFilterColumn
+                + ", is_functional_column="
+                + is_functional_column
+                + ", functional_method="
+                + functional_method
+                + ", use_annotation="
+                + use_annotation
+                + ", functional_store="
+                + functional_store
+                + ", functional_store_depends="
+                + Arrays.toString(functional_store_depends)
+                + '}';
     }
 
     public static class ColumnDomain {
@@ -428,7 +447,6 @@ public class OColumn {
         public void setConditionalOperator(String conditional_operator) {
             this.conditional_operator = conditional_operator;
         }
-
 
         @Override
         public String toString() {

@@ -1,38 +1,31 @@
 /**
- * Odoo, Open Source Management Solution
- * Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Odoo, Open Source Management Solution Copyright (C) 2012-today Odoo SA (<http:www.odoo.com>)
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details
- * <p/>
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>
- * <p/>
- * Created on 21/4/15 4:09 PM
+ *
+ * <p>You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http:www.gnu.org/licenses/>
+ *
+ * <p>Created on 21/4/15 4:09 PM
  */
 package com.odoo.core.rpc.helper;
 
 import android.os.Bundle;
-
 import com.odoo.core.rpc.handler.OdooVersionException;
 import com.odoo.core.rpc.helper.utils.OBundleUtils;
 import com.odoo.core.rpc.helper.utils.gson.OdooResult;
-
 import java.util.List;
 
 /**
  * Stores odoo version information
- * <p/>
- * 8.saas~6     : [8,'saas~6',0,'final',0],
- * 9.0alpha1    : [9,0,0,'alpha',1],
- * 8.0          : [8,0,0,'final',0]
+ *
+ * <p>8.saas~6 : [8,'saas~6',0,'final',0], 9.0alpha1 : [9,0,0,'alpha',1], 8.0 : [8,0,0,'final',0]
  */
 public class OdooVersion {
     public static final String TAG = OdooVersion.class.getSimpleName();
@@ -73,8 +66,9 @@ public class OdooVersion {
         List<Object> version_info = result.getArray("server_version_info");
         version.setVersionNumber(((Double) version_info.get(0)).intValue());
         if (version.getVersionNumber() < 7) {
-            throw new OdooVersionException("Server version is different from " +
-                    "the application supported version. (Only Odoo 7.0+ supported)");
+            throw new OdooVersionException(
+                    "Server version is different from "
+                            + "the application supported version. (Only Odoo 7.0+ supported)");
         }
         String versionType = version_info.get(1) + "";
         int versionTypeNumber = 0;
@@ -93,7 +87,6 @@ public class OdooVersion {
 
         return version;
     }
-
 
     public String getVersionRelease() {
         return versionRelease;
@@ -143,7 +136,6 @@ public class OdooVersion {
         this.versionTypeNumber = versionTypeNumber;
     }
 
-
     public Boolean isEnterprise() {
         return isEnterprise;
     }
@@ -154,14 +146,25 @@ public class OdooVersion {
 
     @Override
     public String toString() {
-        return "OdooVersion{" +
-                "serverSerie='" + serverSerie + '\'' +
-                ", serverVersion='" + serverVersion + '\'' +
-                ", versionType='" + versionType + '\'' +
-                ", versionRelease='" + versionRelease + '\'' +
-                ", versionNumber=" + versionNumber +
-                ", versionTypeNumber=" + versionTypeNumber +
-                ", isEnterprise=" + isEnterprise +
-                '}';
+        return "OdooVersion{"
+                + "serverSerie='"
+                + serverSerie
+                + '\''
+                + ", serverVersion='"
+                + serverVersion
+                + '\''
+                + ", versionType='"
+                + versionType
+                + '\''
+                + ", versionRelease='"
+                + versionRelease
+                + '\''
+                + ", versionNumber="
+                + versionNumber
+                + ", versionTypeNumber="
+                + versionTypeNumber
+                + ", isEnterprise="
+                + isEnterprise
+                + '}';
     }
 }
