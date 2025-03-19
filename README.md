@@ -1,8 +1,10 @@
-<img src="https://github.com/Odoo-mobile/framework/blob/master/odoo_mobile.png" alt="Odoo Mobile"/>
-<br/>v0.1.0 (Build 2)
+![Odoo Mobile](odoo_mobile.png)
 
-This is a fork of the [Odoo-mobile/framework](https://github.com/Odoo-mobile/framework) project.
-Due to the fact that it is impossible to properly configure semantic-release on the fork, the project was copied.
+v0.1.0 (Build 2)
+
+> [!NOTE]
+> This is a fork of the [Odoo-mobile/framework](https://github.com/Odoo-mobile/framework) project.
+> Due to the fact that it is impossible to properly configure semantic-release on the fork, the project was copied.
 
 ![release](https://github.com/Katulos/apk-semantic-release/actions/workflows/release.yml/badge.svg)
 ![develop](https://github.com/Katulos/apk-semantic-release/actions/workflows/develop.yml/badge.svg?branch=develop)
