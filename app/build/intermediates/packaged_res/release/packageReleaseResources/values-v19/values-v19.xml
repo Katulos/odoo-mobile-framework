@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="app_bar_top_padding">24dp</dimen>
-    <dimen name="statusBarHeight">24dp</dimen>
-    <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-</resources>
