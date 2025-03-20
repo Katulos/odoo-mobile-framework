@@ -1,12 +1,12 @@
 <lint-module
     format="1"
-    dir="/home/runner/work/odoo-mobile-framework/odoo-mobile-framework/app"
+    dir="D:\home\dev\android\odoo-mobile-framework\app"
     name=":app"
     type="APP"
     maven="Odoo Mobile Framework:app:unspecified"
     agpVersion="8.9.0"
     buildFolder="build"
-    bootClassPath="/usr/local/lib/android/sdk/platforms/android-35/android.jar:/usr/local/lib/android/sdk/platforms/android-35/optional/org.apache.http.legacy.jar:/usr/local/lib/android/sdk/build-tools/35.0.0/core-lambda-stubs.jar"
+    bootClassPath="D:\Android\SDK\platforms\android-35\android.jar;D:\Android\SDK\platforms\android-35\optional\org.apache.http.legacy.jar;D:\Android\SDK\build-tools\35.0.0\core-lambda-stubs.jar"
     javaSourceLevel="11"
     compileTarget="android-35">
   <lintOptions

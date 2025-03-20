@@ -20,4 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Odoo Mobile Framework"
-include ':app', ':intro-slider-lib'
+include(":app")
+include(":intro-slider-lib")
