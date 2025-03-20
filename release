@@ -10,10 +10,10 @@ fi
 # Get version_name from the first argument
 version_name=$1
 
-# Extract current versionCode from build.gradle
-version_code=$(grep -oP 'versionCode\s+\K\d+' app/build.gradle)
+# Extract current versionCode from build.gradle.kts
+version_code=$(grep -oP 'versionCode\s*=\s*\K\d+' app/build.gradle.kts)
 if [ -z "$version_code" ]; then
-    echo "Error: Failed to extract versionCode from app/build.gradle."
+    echo "Error: Failed to extract versionCode from app/build.gradle.kts."
     exit 1
 fi
 
@@ -24,17 +24,17 @@ if ! [[ "$version_code" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-# Update versionCode in build.gradle
-sed -i "s/versionCode\s\+[0-9]\+/versionCode $version_code/g" app/build.gradle
-if ! grep -q "versionCode $version_code" app/build.gradle; then
-    echo "Error: Failed to update versionCode in app/build.gradle."
+# Update versionCode in build.gradle.kts
+sed -i "s/versionCode\s*=\s*[0-9]\+/versionCode = $version_code/g" app/build.gradle.kts
+if ! grep -q "versionCode = $version_code" app/build.gradle.kts; then
+    echo "Error: Failed to update versionCode in app/build.gradle.kts."
     exit 1
 fi
 
-# Update versionName in build.gradle
-sed -i "s/versionName \"[^\"]*\"/versionName \"$version_name\"/g" app/build.gradle
-if ! grep -q "versionName \"$version_name\"" app/build.gradle; then
-    echo "Error: Failed to update versionName in app/build.gradle."
+# Update versionName in build.gradle.kts
+sed -i "s/versionName\s*=\s*\"[^\"]*\"/versionName = \"$version_name\"/g" app/build.gradle.kts
+if ! grep -q "versionName = \"$version_name\"" app/build.gradle.kts; then
+    echo "Error: Failed to update versionName in app/build.gradle.kts."
     exit 1
 fi
 
@@ -54,6 +54,7 @@ fi
 # Build the project
 ./gradlew spotlessApply
 ./gradlew --no-daemon assembleRelease
+./gradlew --no-daemon bundleRelease
 if [ $? -ne 0 ]; then
     echo "Error: Project build failed."
     exit 1
